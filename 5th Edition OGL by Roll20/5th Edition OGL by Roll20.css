@@ -672,6 +672,7 @@ button[type=roll] * {
 .sheet-exhaustion div.sheet-ex-descriptions
 {
     display: inline-block;
+    padding-top: 5px;
 }
 
 .sheet-exhaustion-toggle[value="0"] ~ .sheet-exhaustion,
