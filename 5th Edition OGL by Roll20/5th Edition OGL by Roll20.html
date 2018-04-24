@@ -6625,38 +6625,134 @@
         var update = {};
         var id = generateRowID();
         
-        getAttrs(["drop_name","drop_weight","drop_properties","drop_modifiers","drop_content","drop_itemtype","drop_damage","drop_damagetype","drop_damage2","drop_damagetype2","drop_range","drop_ac","drop_spellritualflag", "drop_spellschool", "drop_spellcastingtime", "drop_spelltarget", "drop_spellcomp", "drop_spellcomp_materials", "drop_spellconcentrationflag", "drop_spellduration", "drop_spellhealing", "drop_spelldmgmod", "drop_spellsave", "drop_spellsavesuccess", "drop_spellhldie", "drop_spellhldietype", "drop_spellhlbonus", "drop_spelllevel", "drop_spell_damage_progression", "drop_attack_type", "drop_speed", "drop_str", "drop_dex", "drop_con", "drop_int", "drop_wis", "drop_cha", "drop_vulnerabilities", "drop_resistances", "drop_immunities", "drop_condition_immunities", "drop_languages", "drop_challenge_rating", "drop_size", "drop_type", "drop_alignment", "drop_hp", "drop_saving_throws", "drop_senses", "drop_passive_perception", "drop_skills", "drop_token_size", "character_id", "drop_actions", "drop_legendary_actions", "drop_legendary_actions_desc", "drop_reactions", "drop_traits", "npc_legendary_actions"], function(v) {
+        getAttrs(["drop_name","drop_weight","drop_properties","drop_modifiers","drop_content","drop_itemtype","drop_damage","drop_damagetype","drop_damage2","drop_damagetype2","drop_range","drop_ac","drop_spellritualflag", "drop_spellschool", "drop_spellcastingtime", "drop_spelltarget", "drop_spellcomp", "drop_spellcomp_materials", "drop_spellconcentrationflag", "drop_spellduration", "drop_spellhealing", "drop_spelldmgmod", "drop_spellsave", "drop_spellsavesuccess", "drop_spellhldie", "drop_spellhldietype", "drop_spellhlbonus", "drop_spelllevel", "drop_spell_damage_progression", "drop_attack_type", "drop_speed", "drop_str", "drop_dex", "drop_con", "drop_int", "drop_wis", "drop_cha", "drop_vulnerabilities", "drop_resistances", "drop_immunities", "drop_condition_immunities", "drop_languages", "drop_challenge_rating", "drop_size", "drop_type", "drop_alignment", "drop_hp", "drop_saving_throws", "drop_senses", "drop_passive_perception", "drop_skills", "drop_token_size", "character_id", "drop_actions", "drop_legendary_actions", "drop_legendary_actions_desc", "drop_reactions", "drop_traits", "npc_legendary_actions", "strength_mod", "dexterity_mod"], function(v) {
             if(category === "Items") {
-                update["tab"] = "core";
-                if(v.drop_name) {update["repeating_inventory_" + id + "_itemname"] = v.drop_name};
-                if(v.drop_weight) {update["repeating_inventory_" + id + "_itemweight"] = v.drop_weight};
-                if(v.drop_properties) {update["repeating_inventory_" + id + "_itemproperties"] = v.drop_properties};
-                if(v.drop_content) {update["repeating_inventory_" + id + "_itemcontent"] = v.drop_content};
-                if(!v.drop_itemtype || v.drop_itemtype == "") {v.drop_itemtype = category};
-                var mods = "Item Type: " + v.drop_itemtype;
-                if(v.drop_ac && v.drop_ac != "") {
-                    mods += ", AC: " + v.drop_ac; 
-                    callbacks.push( function() {update_ac();} )
-                };
-                if(v.drop_damage && v.drop_damage != "") {mods += ", Damage: " + v.drop_damage};
-                if(v.drop_damagetype && v.drop_damagetype != "") {mods += ", Damage Type: " + v.drop_damagetype};
-                if(v.drop_damage2 && v.drop_damage2 != "") {mods += ", Secondary Damage: " + v.drop_damage2};
-                if(v.drop_damagetype2 && v.drop_damagetype2 != "") {mods += ", Secondary Damage Type: " + v.drop_damagetype2};
-                if(v.drop_range && v.drop_range != "") {mods += ", Range: " + v.drop_range};
-                if(v.drop_modifiers && v.drop_modifiers != "") {mods += ", " + v.drop_modifiers};
-                update["repeating_inventory_" + id + "_itemmodifiers"] = mods;
-                if(v.drop_itemtype.indexOf("Weapon") > -1) {
-                    update["repeating_inventory_" + id + "_hasattack"] = 1;
-                    callbacks.push( function() {create_attack_from_item(id);} );
+                if(v["npc"] === 0) {
+                    update["tab"] = "core";
+                    if(v.drop_name) {update["repeating_inventory_" + id + "_itemname"] = v.drop_name};
+                    if(v.drop_weight) {update["repeating_inventory_" + id + "_itemweight"] = v.drop_weight};
+                    if(v.drop_properties) {update["repeating_inventory_" + id + "_itemproperties"] = v.drop_properties};
+                    if(v.drop_content) {update["repeating_inventory_" + id + "_itemcontent"] = v.drop_content};
+                    if(!v.drop_itemtype || v.drop_itemtype == "") {v.drop_itemtype = category};
+                    var mods = "Item Type: " + v.drop_itemtype;
+                    if(v.drop_ac && v.drop_ac != "") {
+                        mods += ", AC: " + v.drop_ac; 
+                        callbacks.push( function() {update_ac();} )
+                    };
+                    if(v.drop_damage && v.drop_damage != "") {mods += ", Damage: " + v.drop_damage};
+                    if(v.drop_damagetype && v.drop_damagetype != "") {mods += ", Damage Type: " + v.drop_damagetype};
+                    if(v.drop_damage2 && v.drop_damage2 != "") {mods += ", Secondary Damage: " + v.drop_damage2};
+                    if(v.drop_damagetype2 && v.drop_damagetype2 != "") {mods += ", Secondary Damage Type: " + v.drop_damagetype2};
+                    if(v.drop_range && v.drop_range != "") {mods += ", Range: " + v.drop_range};
+                    if(v.drop_modifiers && v.drop_modifiers != "") {mods += ", " + v.drop_modifiers};
+                    update["repeating_inventory_" + id + "_itemmodifiers"] = mods;
+                    if(v.drop_itemtype.indexOf("Weapon") > -1) {
+                        update["repeating_inventory_" + id + "_hasattack"] = 1;
+                        callbacks.push( function() {create_attack_from_item(id);} );
+                    }
+                    else if(v.drop_itemtype.indexOf("Ammunition") > -1) {
+                        update["repeating_inventory_" + id + "_useasresource"] = 1;
+                        callbacks.push( function() {create_resource_from_item(id);} );
+                    };
+                    if(v["drop_modifiers"]) {
+                        callbacks.push( function() {check_itemmodifiers(v["drop_modifiers"]);} );
+                    };
+                    callbacks.push( function() {update_weight();} );
                 }
-                else if(v.drop_itemtype.indexOf("Ammunition") > -1) {
-                    update["repeating_inventory_" + id + "_useasresource"] = 1;
-                    callbacks.push( function() {create_resource_from_item(id);} );
-                };
-                if(v["drop_modifiers"]) {
-                    callbacks.push( function() {check_itemmodifiers(v["drop_modifiers"]);} );
-                };
-                callbacks.push( function() {update_weight();} );
+                else {
+                    if(v.drop_itemtype && new RegExp('\\bweapon\\b', 'i').test(v.drop_itemtype)) {
+                        let make_npc_attack_from_item = function(rowid, options) {
+                            update["repeating_npcaction_" + rowid + "_npc_options-flag"] = "0";
+                            update["repeating_npcaction_" + rowid + "_attack_flag"] = "on";
+
+                            if(v.drop_name) {
+                                update["repeating_npcaction_" + rowid + "_name"] = v.drop_name;
+                                if(options && options.versatile) {
+                                    update["repeating_npcaction_" + rowid + "_name"] += " (" + (options.versatile === 1 ? "One-Handed" : "Two-Handed") + ")";
+                                } else if(options && options.thrown) {
+                                    update["repeating_npcaction_" + rowid + "_name"] += " (Thrown)";
+                                }
+                            }
+                            if(v.drop_content) { update["repeating_npcaction_" + rowid + "_description"] = v.drop_content; }
+
+                            update["repeating_npcaction_" + rowid + "_attack_display_flag"] = "{{attack=1}}";
+                            update["repeating_npcaction_" + rowid + "_attack_options"] = "{{attack=1}}";
+                            update["repeating_npcaction_" + rowid + "_attack_type"] = v.drop_itemtype.substring(0, v.drop_itemtype.indexOf(" "));
+
+                            let thrown = v.drop_properties && new RegExp('\\bthrown\\b', 'i').test(v.drop_properties);
+
+                            if(v.drop_range && v.drop_range != "" && (!thrown || (options && options.thrown))) {
+                                update["repeating_npcaction_" + rowid + "_attack_range"] = v.drop_range;
+                            }
+                            else if(v.drop_properties && new RegExp('\\breach\\b', 'i').test(v.drop_properties)) {
+                                update["repeating_npcaction_" + rowid + "_attack_range"] = "10 ft";
+                            }
+                            else {
+                                update["repeating_npcaction_" + rowid + "_attack_range"] = "5 ft";
+                            }
+
+                            update["repeating_npcaction_" + rowid + "_attack_target"] = "one target";
+
+                            let isFinesse = v.drop_properties && new RegExp('\\bfinesse\\b', 'i').test(v.drop_properties);
+                            let attack_type = update[`repeating_npcaction_${id}_attack_type`].toLowerCase();
+                            let use_dex_mod = attack_type === "ranged" || (isFinesse && v.dexterity_mod > v.strength_mod);
+                            update["repeating_npcaction_" + rowid + "_attack_tohit"] = use_dex_mod ? v.dexterity_mod : v.strength_mod;
+
+                            if(options && options.versatile === 2) {
+                                if(v.drop_damage2) { update["repeating_npcaction_" + rowid + "_attack_damage"] = v.drop_damage2; }
+                                if(v.drop_damagetype2) {
+                                    update["repeating_npcaction_" + rowid + "_attack_damagetype"] = v.drop_damagetype2;
+                                } else if(v.drop_damagetype) {
+                                    update["repeating_npcaction_" + rowid + "_attack_damagetype"] = v.drop_damagetype;
+                                }
+                            }
+                            else {
+                                if(v.drop_damage) { update["repeating_npcaction_" + rowid + "_attack_damage"] = v.drop_damage; }
+                                if(v.drop_damagetype) {update["repeating_npcaction_" + rowid + "_attack_damagetype"] = v.drop_damagetype; }
+                            }
+
+                            if(v.drop_modifiers) {
+                                if(attack_type === "melee") {
+                                    let tohit_regex = /(?:melee|weapon) *attacks? *([\\+\\-] *[0-9]+)/i;
+                                    let melee_damage_regex = /(?:melee|weapon) *damage *([\\+\\-] *[0-9]+)/i;
+                                    let tohit_match = tohit_regex.exec(v.drop_modifiers);
+                                    let damage_match = melee_damage_regex.exec(v.drop_modifiers);
+
+                                    if(tohit_match && tohit_match[1]) { update[`repeating_npcaction_${rowid}_attack_tohit`] = +update[`repeating_npcaction_${rowid}_attack_tohit`] + +tohit_match[1]; }
+                                    if(damage_match && damage_match[1]) { update[`repeating_npcaction_${rowid}_attack_damage`] += damage_match[1]; }
+                                } else if(attack_type === "ranged") {
+                                    let tohit_regex = /(?:ranged|weapon) *attacks? *([\\+\\-] *[0-9]+)/i;
+                                    let ranged_damage_regex = /(?:ranged|weapon) *damage *([\\+\\-] *[0-9]+)/i;
+                                    let tohit_match = tohit_regex.exec(v.drop_modifiers);
+                                    let damage_match = ranged_damage_regex.exec(v.drop_modifiers);
+                                }
+                            }
+                        };
+                        
+                        let versatile = v.drop_properties && new RegExp('\\bversatile\\b', 'i').test(v.drop_properties) ? 1 : undefined;
+                        make_npc_attack_from_item(id, {versatile: versatile});
+                        if(v.drop_properties && new RegExp('\\bthrown\\b', 'i').test(v.drop_properties)) {
+                            make_npc_attack_from_item(generateRowID(), {thrown: true});
+                        }
+                        if(v.drop_damage2) {
+                            if(versatile) {
+                                make_npc_attack_from_item(generateRowID(), {versatile:2})
+                            }
+                            else {
+                                update["repeating_npcaction_" + id + "_attack_damage2"] = v.drop_damage2;
+                                if(v.drop_damagetype2) {
+                                    update["repeating_npcaction_" + id + "_attack_damagetype2"] = v.drop_damagetype2;
+                                }
+                                else {
+                                    update["repeating_npcaction_" + id + "_attack_damagetype2"] = update["repeating_npcaction_" + id + "_attack_damagetype"];
+                                }
+                            }
+                        }
+                        
+                        callbacks.push(() => check_itemmodifiers(v.drop_modifiers));
+                        update_npc_action("all");
+                    }   
+                }
             };
             if(category === "Spells") {
                 var lvl = v.drop_spelllevel && v.drop_spelllevel > 0 ? v.drop_spelllevel : "cantrip";
