@@ -9148,39 +9148,38 @@
                 var dmg2 = v[repvar + actionid + "_attack_damage2"] && v[repvar + actionid + "_attack_damage2"] != "" ? v[repvar + actionid + "_attack_damage2"] : "";
                 var dmg2type = v[repvar + actionid + "_attack_damagetype2"] && v[repvar + actionid + "_attack_damagetype2"] != "" ? " " + v[repvar + actionid + "_attack_damagetype2"] : "";
                 var dmgspacer = dmg1 != "" && dmg2 != "" ? " plus " : "";
+
+                let parsed_dmg1 = parse_roll_string(dmg1);
+                let parsed_dmg2 = parse_roll_string(dmg2);
+                
                 if(dmg1 != "") {
-                    dmg1t = dmg1.replace(/\s/g, '').split(/d|(?=\+|\-)/g);
-                    dmg1t2 = isNaN(eval(dmg1t[1])) === false ? eval(dmg1t[1]) : 0;
-                    if(dmg1t.length < 2) {
-                        onhit = onhit + dmg1t[0] + " (" + dmg1 + ")" + dmg1type + " damage";
-                    }
-                    else if(dmg1t.length < 3) {
-                        onhit = onhit + Math.floor(dmg1t[0]*((dmg1t2/2)+0.5)) + " (" + dmg1 + ")" + dmg1type + " damage";
-                    }
-                    else {
-                        onhit = onhit + (Math.floor(dmg1t[0]*((dmg1t2/2)+0.5))+parseInt(dmg1t[2],10)) + " (" + dmg1 + ")" + dmg1type + " damage";
-                    };
+                    onhit = onhit + parsed_dmg1.avg + " (" + dmg1 + ")" + dmg1type + " damage";
                 };
                 dmgspacer = dmg1 != "" && dmg2 != "" ? " plus " : "";
                 onhit = onhit + dmgspacer;
                 if(dmg2 != "") {
-                    dmg2t = dmg2.replace(/\s/g, '').split(/[d+]+/);
-                    dmg2t2 = isNaN(eval(dmg2t[1])) === false ? eval(dmg2t[1]) : 0;
-                    if(dmg2t.length < 2) {
-                        onhit = onhit + dmg2t[0] + " (" + dmg2 + ")" + dmg2type + " damage";
-                    }
-                    else if(dmg2t.length < 3) {
-                        onhit = onhit + Math.floor(dmg2t[0]*((dmg2t2/2)+0.5)) + " (" + dmg2 + ")" + dmg2type + " damage";
-                    }
-                    else {
-                        onhit = onhit + (Math.floor(dmg2t[0]*((dmg2t2/2)+0.5))+parseInt(dmg2t[2],10)) + " (" + dmg2 + ")" + dmg2type + " damage";
-                    };
+                    onhit = onhit + parsed_dmg2.avg + " (" + dmg2 + ")" + dmg2type + " damage";
                 };
                 if(dmg1 != "" || dmg2 != "") {damage_flag = damage_flag + "{{damage=1}} "};
                 if(dmg1 != "") {damage_flag = damage_flag + "{{dmg1flag=1}} "};
                 if(dmg2 != "") {damage_flag = damage_flag + "{{dmg2flag=1}} "};
-                var crit1 = dmg1 != "" && dmg1t.length > 1 ? dmg1t[0] + "d" + dmg1t[1] : "";
-                var crit2 = dmg2 != "" && dmg2t.length > 1 ? dmg2t[0] + "d" + dmg2t[1] : "";
+
+                var crit1 = "";
+                if(parsed_dmg1.rolls.length > 0){
+                    parsed_dmg1.rolls.forEach(value => {
+                        crit1 += parsed_dmg1.array[value] + "+";
+                    });
+                    crit1 = crit1.substring(0, crit1.length - 1);
+                }
+
+                var crit2 = "";
+                if(parsed_dmg2.rolls.length > 0){
+                    parsed_dmg2.rolls.forEach(value => {
+                        crit2 += parsed_dmg2.array[value] + "+";
+                    });
+                    crit2 = crit2.substring(0, crit2.length - 1);
+                }
+                
                 var rollbase = "";
                 if(v.dtype === "full") {
                     rollbase = "@{wtype}&{template:npcaction} " + attack_flag + " @{damage_flag} @{npc_name_flag} {{rname=@{name}}} {{r1=[[@{d20}+(@{attack_tohit}+0)]]}} @{rtype}+(@{attack_tohit}+0)]]}} {{dmg1=[[@{attack_damage}+0]]}} {{dmg1type=@{attack_damagetype}}} {{dmg2=[[@{attack_damage2}+0]]}} {{dmg2type=@{attack_damagetype2}}} {{crit1=[[@{attack_crit}+0]]}} {{crit2=[[@{attack_crit2}+0]]}} {{description=@{show_desc}}} @{charname_output}";
@@ -9209,6 +9208,50 @@
                 setAttrs(update, {silent: true});
             });
         });
+    };
+
+    var parse_roll_string = function(dmg) {
+        let out_dmg = {array: [], avg: 0, rolls: []};
+
+        if(!dmg || dmg === "") {
+            return out_dmg;
+        }
+
+        let dmg_regex_initial = /(\-?\d+(?:d\d+)?)/ig;
+        let dmg_regex_repeating = /([\+\-])(\-?\d+(?:d\d+)?)/ig;
+        let dmg_nospace = dmg.replace(/\s/g, '');
+        let dmg_initial = dmg_regex_initial.exec(dmg_nospace);
+        
+        if(dmg_initial) {
+            out_dmg.array.push(dmg_initial[1]);
+            dmg_regex_repeating.lastIndex = dmg_regex_initial.lastIndex;
+            let dmg_repeating;
+            while(dmg_repeating = dmg_regex_repeating.exec(dmg_nospace)) {
+                out_dmg.array.push(dmg_repeating[1], dmg_repeating[2]);
+            }
+        }
+
+        let add = true;
+        let dice_regex = /(\d+)d(\d+)/i;
+        let dice;
+
+        out_dmg.array.forEach((value, index, array) => {
+            if(value === "+") {
+                add = true;
+            } else if(value === "-") {
+                add = false;
+            } else if(dice = dice_regex.exec(value)){
+                // this value is a die roll
+                let dice_avg = Math.floor(+dice[1] * (+dice[2] / 2 + 0.5));
+                out_dmg.avg += add ? dice_avg : -dice_avg;
+                out_dmg.rolls.push(index);
+            } else {
+                // this value is a number
+                out_dmg.avg += add ? +value : -+value;
+            }
+        })
+
+        return out_dmg;
     };
 
     var v2_old_values_check = function() {
