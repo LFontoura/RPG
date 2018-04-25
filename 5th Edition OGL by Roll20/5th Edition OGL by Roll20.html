@@ -6676,6 +6676,9 @@
                                     let ranged_damage_regex = /(?:ranged|weapon) *damage *([\\+\\-] *[0-9]+)/i;
                                     let tohit_match = tohit_regex.exec(v.drop_modifiers);
                                     let damage_match = ranged_damage_regex.exec(v.drop_modifiers);
+
+                                    if(tohit_match && tohit_match[1]) { update[`repeating_npcaction_${rowid}_attack_tohit`] = +update[`repeating_npcaction_${rowid}_attack_tohit`] + +tohit_match[1]; }
+                                    if(damage_match && damage_match[1]) { update[`repeating_npcaction_${rowid}_attack_damage`] += damage_match[1]; }
                                 }
                             }
                         };
