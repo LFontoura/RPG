@@ -9216,24 +9216,24 @@
         });
     };
 
-    var parse_roll_string = function(dmg) {
-        let out_dmg = {array: [], avg: 0, rolls: []};
+    var parse_roll_string = function(rollstring) {
+        let out = {array: [], avg: 0, rolls: []};
 
-        if(!dmg || dmg === "") {
-            return out_dmg;
+        if(!rollstring || rollstring === "") {
+            return out;
         }
 
-        let dmg_regex_initial = /(\-?\d+(?:d\d+)?)/ig;
-        let dmg_regex_repeating = /([\+\-])(\-?\d+(?:d\d+)?)/ig;
-        let dmg_nospace = dmg.replace(/\s/g, '');
-        let dmg_initial = dmg_regex_initial.exec(dmg_nospace);
+        let rs_regex_initial = /(\-?\d+(?:d\d+)?)/ig;
+        let rs_regex_repeating = /([\+\-])(\-?\d+(?:d\d+)?)/ig;
+        let rs_nospace = rollstring.replace(/\s/g, '');
+        let rs_initial = rs_regex_initial.exec(rs_nospace);
         
-        if(dmg_initial) {
-            out_dmg.array.push(dmg_initial[1]);
-            dmg_regex_repeating.lastIndex = dmg_regex_initial.lastIndex;
-            let dmg_repeating;
-            while(dmg_repeating = dmg_regex_repeating.exec(dmg_nospace)) {
-                out_dmg.array.push(dmg_repeating[1], dmg_repeating[2]);
+        if(rs_initial) {
+            out.array.push(rs_initial[1]);
+            rs_regex_repeating.lastIndex = rs_regex_initial.lastIndex;
+            let rs_repeating;
+            while(rs_repeating = rs_regex_repeating.exec(rs_nospace)) {
+                out.array.push(rs_repeating[1], rs_repeating[2]);
             }
         }
 
@@ -9241,7 +9241,7 @@
         let dice_regex = /(\d+)d(\d+)/i;
         let dice;
 
-        out_dmg.array.forEach((value, index, array) => {
+        out.array.forEach((value, index, array) => {
             if(value === "+") {
                 add = true;
             } else if(value === "-") {
@@ -9249,15 +9249,15 @@
             } else if(dice = dice_regex.exec(value)){
                 // this value is a die roll
                 let dice_avg = Math.floor(+dice[1] * (+dice[2] / 2 + 0.5));
-                out_dmg.avg += add ? dice_avg : -dice_avg;
-                out_dmg.rolls.push(index);
+                out.avg += add ? dice_avg : -dice_avg;
+                out.rolls.push(index);
             } else {
                 // this value is a number
-                out_dmg.avg += add ? +value : -+value;
+                out.avg += add ? +value : -+value;
             }
         })
 
-        return out_dmg;
+        return out;
     };
 
     var v2_old_values_check = function() {
