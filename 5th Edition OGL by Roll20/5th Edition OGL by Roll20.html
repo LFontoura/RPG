@@ -1400,6 +1400,19 @@
                     <button type="roll" name="roll_death_save" style="margin-top: 6px;" value="@{wtype}&{template:simple} {{rname=^{death-save-u}}} {{mod=@{death_save_bonus}}} {{r1=[[@{d20}+@{death_save_bonus}[MOD]@{globalsavingthrowbonus}]]}} {{normal=1}} @{global_save_mod} @{charname_output}" data-i18n="death-saves-u">DEATH SAVES</button> 
                 </div>
             </div>
+            <input type="hidden" class="exhaustion-toggle" name="attr_exhaustion_toggle" value="0">
+            <div class="exhaustion" style="position: relative;">
+                <input type="number" name="attr_exhaustion_level" step="1" min="0" max="6">
+                <div class="ex-descriptions">
+                    <span class="ex-description" name="attr_exhaustion_1"></span>
+                    <span class="ex-description" name="attr_exhaustion_2"></span>
+                    <span class="ex-description" name="attr_exhaustion_3"></span>
+                    <span class="ex-description" name="attr_exhaustion_4"></span>
+                    <span class="ex-description" name="attr_exhaustion_5"></span>
+                    <span class="ex-description" name="attr_exhaustion_6"></span>
+                </div>
+                <span class="label" data-i18n="exhaustion-u">EXHAUSTION LEVEL</span>
+            </div>
             <input type="hidden" class="ammoflag" name="attr_ammotracking">
             <div class="attacks" style="position: relative;">
                 <div class="top">
@@ -5938,6 +5951,18 @@
         }
     });
 
+    on("change:exhaustion_toggle", eventinfo => {
+        if(eventinfo.newValue !== "0") {
+            getAttrs(["exhaustion_level"], (attrs) => {
+                if(!attrs.exhaustion_level || attrs.exhaustion_level === "") {
+                    let update = {};
+                    update.exhaustion_level = "0";
+                    setAttrs(update);
+                }
+            });
+        }
+    });
+
     on("change:exhaustion_level", function() {
         var update = {
             "exhaustion_1": "",
@@ -5949,21 +5974,21 @@
         };
 
         getAttrs(["exhaustion_level"], function(attrs) {
-            switch(+attrs["exhaustion_level"]) {
-                case 6:
+            switch(attrs["exhaustion_level"]) {
+                case "6":
                     update["exhaustion_6"] = "• " + getTranslationByKey("exhaustion-6");
-                case 5:
+                case "5":
                     update["exhaustion_5"] = "• " + getTranslationByKey("exhaustion-5");
-                case 4:
+                case "4":
                     update["exhaustion_4"] = "• " + getTranslationByKey("exhaustion-4");
-                case 3:
+                case "3":
                     update["exhaustion_3"] = "• " + getTranslationByKey("exhaustion-3");
-                case 2:
+                case "2":
                     update["exhaustion_2"] = "• " + getTranslationByKey("exhaustion-2");
-                case 1:
+                case "1":
                     update["exhaustion_1"] = "• " + getTranslationByKey("exhaustion-1");
                     break;
-                case 0:
+                default:
                     update["exhaustion_1"] = "• " + getTranslationByKey("exhaustion-0");
                     break;
             }
