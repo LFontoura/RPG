@@ -1108,38 +1108,40 @@
                     <div class="saving-throw">
                         <input type="checkbox" name="attr_strength_save_prof" title="@{strength_save_prof}" value="(@{pb})">
                         <span name="attr_strength_save_bonus" title="@{strength_save_bonus}">0</span>
-                        <button type="roll" name="roll_strength_save" value="@{wtype}&{template:simple} {{rname=^{strength-save-u}}} {{mod=@{strength_save_bonus}}} {{r1=[[@{d20}+@{strength_save_bonus}@{pbd_safe}]]}} @{rtype}+@{strength_save_bonus}@{pbd_safe}]]}} @{global_save_mod} @{charname_output}" data-i18n="strength">Strength</button>
+                        <button type="roll" name="roll_strength_save" value="@{wtype}&{template:simple} {{rname=^{strength-save-u}}} {{mod=@{strength_save_bonus}}} {{r1=[[@{d20}+@{strength_save_bonus}@{pbd_safe}]]}} @{rtype}+@{strength_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}" data-i18n="strength">Strength</button>
                     </div>
                     <div class="saving-throw">
                         <input type="checkbox" name="attr_dexterity_save_prof" title="@{dexterity_save_prof}" value="(@{pb})">
                         <span name="attr_dexterity_save_bonus" title="@{dexterity_save_bonus}">0</span>
-                        <button type="roll" name="roll_dexterity_save" value="@{wtype}&{template:simple} {{rname=^{dexterity-save-u}}} {{mod=@{dexterity_save_bonus}}} {{r1=[[@{d20}+@{dexterity_save_bonus}@{pbd_safe}]]}} @{rtype}+@{dexterity_save_bonus}@{pbd_safe}]]}} @{global_save_mod} @{charname_output}" data-i18n="dexterity">Dexterity</button>
+                        <button type="roll" name="roll_dexterity_save" value="@{wtype}&{template:simple} {{rname=^{dexterity-save-u}}} {{mod=@{dexterity_save_bonus}}} {{r1=[[@{d20}+@{dexterity_save_bonus}@{pbd_safe}]]}} @{rtype}+@{dexterity_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}" data-i18n="dexterity">Dexterity</button>
                     </div>
                     <div class="saving-throw">
                         <input type="checkbox" name="attr_constitution_save_prof" title="@{constitution_save_prof}" value="(@{pb})">
                         <span name="attr_constitution_save_bonus" title="@{constitution_save_bonus}">0</span>
-                        <button type="roll" name="roll_constitution_save" value="@{wtype}&{template:simple} {{rname=^{constitution-save-u}}} {{mod=@{constitution_save_bonus}}} {{r1=[[@{d20}+@{constitution_save_bonus}@{pbd_safe}]]}} @{rtype}+@{constitution_save_bonus}@{pbd_safe}]]}} @{global_save_mod} @{charname_output}" data-i18n="constitution">Constitution</button>
+                        <button type="roll" name="roll_constitution_save" value="@{wtype}&{template:simple} {{rname=^{constitution-save-u}}} {{mod=@{constitution_save_bonus}}} {{r1=[[@{d20}+@{constitution_save_bonus}@{pbd_safe}]]}} @{rtype}+@{constitution_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}" data-i18n="constitution">Constitution</button>
                     </div>
                     <div class="saving-throw">
                         <input type="checkbox" name="attr_intelligence_save_prof" title="@{intelligence_save_prof}" value="(@{pb})">
                         <span name="attr_intelligence_save_bonus" title="@{intelligence_save_bonus}">0</span>
-                        <button type="roll" name="roll_intelligence_save" value="@{wtype}&{template:simple} {{rname=^{intelligence-save-u}}} {{mod=@{intelligence_save_bonus}}} {{r1=[[@{d20}+@{intelligence_save_bonus}@{pbd_safe}]]}} @{rtype}+@{intelligence_save_bonus}@{pbd_safe}]]}} @{global_save_mod} @{charname_output}" data-i18n="intelligence">Intelligence</button>
+                        <button type="roll" name="roll_intelligence_save" value="@{wtype}&{template:simple} {{rname=^{intelligence-save-u}}} {{mod=@{intelligence_save_bonus}}} {{r1=[[@{d20}+@{intelligence_save_bonus}@{pbd_safe}]]}} @{rtype}+@{intelligence_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}" data-i18n="intelligence">Intelligence</button>
                     </div>
                     <div class="saving-throw">
                         <input type="checkbox" name="attr_wisdom_save_prof" title="@{wisdom_save_prof}" value="(@{pb})">
                         <span name="attr_wisdom_save_bonus" title="@{wisdom_save_bonus}">0</span>
-                        <button type="roll" name="roll_wisdom_save" value="@{wtype}&{template:simple} {{rname=^{wisdom-save-u}}} {{mod=@{wisdom_save_bonus}}} {{r1=[[@{d20}+@{wisdom_save_bonus}@{pbd_safe}]]}} @{rtype}+@{wisdom_save_bonus}@{pbd_safe}]]}} @{global_save_mod} @{charname_output}" data-i18n="wisdom">Wisdom</button>
+                        <button type="roll" name="roll_wisdom_save" value="@{wtype}&{template:simple} {{rname=^{wisdom-save-u}}} {{mod=@{wisdom_save_bonus}}} {{r1=[[@{d20}+@{wisdom_save_bonus}@{pbd_safe}]]}} @{rtype}+@{wisdom_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}" data-i18n="wisdom">Wisdom</button>
                     </div>
                     <div class="saving-throw">
                         <input type="checkbox" name="attr_charisma_save_prof" title="@{charisma_save_prof}" value="(@{pb})">
                         <span name="attr_charisma_save_bonus" title="@{charisma_save_bonus}">0</span>
-                        <button type="roll" name="roll_charisma_save" value="@{wtype}&{template:simple} {{rname=^{charisma-save-u}}} {{mod=@{charisma_save_bonus}}} {{r1=[[@{d20}+@{charisma_save_bonus}@{pbd_safe}]]}} @{rtype}+@{charisma_save_bonus}@{pbd_safe}]]}} @{global_save_mod} @{charname_output}" data-i18n="charisma">Charisma</button>
+                        <button type="roll" name="roll_charisma_save" value="@{wtype}&{template:simple} {{rname=^{charisma-save-u}}} {{mod=@{charisma_save_bonus}}} {{r1=[[@{d20}+@{charisma_save_bonus}@{pbd_safe}]]}} @{rtype}+@{charisma_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}" data-i18n="charisma">Charisma</button>
                     </div>
                     <input type="hidden" class="toggleflag" name="attr_global_save_mod_flag">
                     <div class="hidden globalattack">
-                        <input type="checkbox" name="attr_global_save_mod" value="{{global=[[@{global_save_mod_field}]]}}">
-                        <textarea type="textarea" name="attr_global_save_mod_field" placeholder="1d4[BLESS]" style="width: 125px;"></textarea>
-                        <span class="label" data-i18n="global-save-u">GLOBAL SAVE MODIFIER</span>
+                        <fieldset class="repeating_savemod">
+                            <input type="checkbox" name="attr_active_flag" value="1">
+                            <textarea type="textarea" name="attr_rollstring" placeholder="1d4[BLESS]" style="width: 125px;"></textarea>
+                            <span class="label" data-i18n="global-save-u">GLOBAL SAVE MODIFIER</span>
+                        </fieldset>
                     </div>
                     <div class="label">
                         <span data-i18n="saving-throws-u">SAVING THROWS</span>
@@ -1150,92 +1152,92 @@
                         <div class="skill" data-i18n-list-item="acrobatics">
                             <input type="checkbox" name="attr_acrobatics_prof" title="@{acrobatics_prof}" value="(@{pb}*@{acrobatics_type})">
                             <span name="attr_acrobatics_bonus" title="@{acrobatics_bonus}">0</span>
-                            <button type="roll" name="roll_acrobatics" value="@{wtype}&{template:simple} {{rname=^{acrobatics-u}}} {{mod=@{acrobatics_bonus}}} {{r1=[[@{d20}+@{acrobatics_bonus}@{pbd_safe}]]}} @{rtype}+@{acrobatics_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}" data-i18n="acrobatics-core">Acrobatics <span>(Dex)</span></button>
+                            <button type="roll" name="roll_acrobatics" value="@{wtype}&{template:simple} {{rname=^{acrobatics-u}}} {{mod=@{acrobatics_bonus}}} {{r1=[[@{d20}+@{acrobatics_bonus}@{pbd_safe}]]}} @{rtype}+@{acrobatics_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}" data-i18n="acrobatics-core">Acrobatics <span>(Dex)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="animal_handling">
                             <input type="checkbox" name="attr_animal_handling_prof" title="@{animal_handling_prof}" value="(@{pb}*@{animal_handling_type})">
                             <span name='attr_animal_handling_bonus' title='@{animal_handling_bonus}'>0</span>
-                            <button type='roll' name='roll_animal_handling' value='@{wtype}&{template:simple} {{rname=^{animal_handling-u}}} {{mod=@{animal_handling_bonus}}} {{r1=[[@{d20}+@{animal_handling_bonus}@{pbd_safe}]]}} @{rtype}+@{animal_handling_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='animal_handling-core'>Animal Handling <span>(Wis)</span></button>
+                            <button type='roll' name='roll_animal_handling' value='@{wtype}&{template:simple} {{rname=^{animal_handling-u}}} {{mod=@{animal_handling_bonus}}} {{r1=[[@{d20}+@{animal_handling_bonus}@{pbd_safe}]]}} @{rtype}+@{animal_handling_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='animal_handling-core'>Animal Handling <span>(Wis)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="arcana">
                             <input type="checkbox" name="attr_arcana_prof" title="@{arcana_prof}" value="(@{pb}*@{arcana_type})">
                             <span name='attr_arcana_bonus' title='@{arcana_bonus}'>0</span>
-                            <button type='roll' name='roll_arcana' value='@{wtype}&{template:simple} {{rname=^{arcana-u}}} {{mod=@{arcana_bonus}}} {{r1=[[@{d20}+@{arcana_bonus}@{pbd_safe}]]}} @{rtype}+@{arcana_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='arcana-core'>Arcana <span>(Int)</span></button>
+                            <button type='roll' name='roll_arcana' value='@{wtype}&{template:simple} {{rname=^{arcana-u}}} {{mod=@{arcana_bonus}}} {{r1=[[@{d20}+@{arcana_bonus}@{pbd_safe}]]}} @{rtype}+@{arcana_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='arcana-core'>Arcana <span>(Int)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="athletics">
                             <input type="checkbox" name="attr_athletics_prof" title="@{athletics_prof}" value="(@{pb}*@{athletics_type})">
                             <span name='attr_athletics_bonus' title='@{athletics_bonus}'>0</span>
-                            <button type='roll' name='roll_athletics' value='@{wtype}&{template:simple} {{rname=^{athletics-u}}} {{mod=@{athletics_bonus}}} {{r1=[[@{d20}+@{athletics_bonus}@{pbd_safe}]]}} @{rtype}+@{athletics_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='athletics-core'>Athletics <span>(Str)</span></button>
+                            <button type='roll' name='roll_athletics' value='@{wtype}&{template:simple} {{rname=^{athletics-u}}} {{mod=@{athletics_bonus}}} {{r1=[[@{d20}+@{athletics_bonus}@{pbd_safe}]]}} @{rtype}+@{athletics_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='athletics-core'>Athletics <span>(Str)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="deception">
                             <input type="checkbox" name="attr_deception_prof" title="@{deception_prof}" value="(@{pb}*@{deception_type})">
                             <span name='attr_deception_bonus' title='@{deception_bonus}'>0</span>
-                            <button type='roll' name='roll_deception' value='@{wtype}&{template:simple} {{rname=^{deception-u}}} {{mod=@{deception_bonus}}} {{r1=[[@{d20}+@{deception_bonus}@{pbd_safe}]]}} @{rtype}+@{deception_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='deception-core'>Deception <span>(Cha)</span></button>
+                            <button type='roll' name='roll_deception' value='@{wtype}&{template:simple} {{rname=^{deception-u}}} {{mod=@{deception_bonus}}} {{r1=[[@{d20}+@{deception_bonus}@{pbd_safe}]]}} @{rtype}+@{deception_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='deception-core'>Deception <span>(Cha)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="history">
                             <input type="checkbox" name="attr_history_prof" title="@{history_prof}" value="(@{pb}*@{history_type})">
                             <span name='attr_history_bonus' title='@{history_bonus}'>0</span>
-                            <button type='roll' name='roll_history' value='@{wtype}&{template:simple} {{rname=^{history-u}}} {{mod=@{history_bonus}}} {{r1=[[@{d20}+@{history_bonus}@{pbd_safe}]]}} @{rtype}+@{history_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='history-core'>History <span>(Int)</span></button>
+                            <button type='roll' name='roll_history' value='@{wtype}&{template:simple} {{rname=^{history-u}}} {{mod=@{history_bonus}}} {{r1=[[@{d20}+@{history_bonus}@{pbd_safe}]]}} @{rtype}+@{history_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='history-core'>History <span>(Int)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="insight">
                             <input type="checkbox" name="attr_insight_prof" title="@{insight_prof}" value="(@{pb}*@{insight_type})">
                             <span name='attr_insight_bonus' title='@{insight_bonus}'>0</span>
-                            <button type='roll' name='roll_insight' value='@{wtype}&{template:simple} {{rname=^{insight-u}}} {{mod=@{insight_bonus}}} {{r1=[[@{d20}+@{insight_bonus}@{pbd_safe}]]}} @{rtype}+@{insight_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='insight-core'>Insight <span>(Wis)</span></button>
+                            <button type='roll' name='roll_insight' value='@{wtype}&{template:simple} {{rname=^{insight-u}}} {{mod=@{insight_bonus}}} {{r1=[[@{d20}+@{insight_bonus}@{pbd_safe}]]}} @{rtype}+@{insight_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='insight-core'>Insight <span>(Wis)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="intimidation">
                             <input type="checkbox" name="attr_intimidation_prof" title="@{intimidation_prof}" value="(@{pb}*@{intimidation_type})">
                             <span name='attr_intimidation_bonus' title='@{intimidation_bonus}'>0</span>
-                            <button type='roll' name='roll_intimidation' value='@{wtype}&{template:simple} {{rname=^{intimidation-u}}} {{mod=@{intimidation_bonus}}} {{r1=[[@{d20}+@{intimidation_bonus}@{pbd_safe}]]}} @{rtype}+@{intimidation_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='intimidation-core'>Intimidation <span>(Cha)</span></button>
+                            <button type='roll' name='roll_intimidation' value='@{wtype}&{template:simple} {{rname=^{intimidation-u}}} {{mod=@{intimidation_bonus}}} {{r1=[[@{d20}+@{intimidation_bonus}@{pbd_safe}]]}} @{rtype}+@{intimidation_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='intimidation-core'>Intimidation <span>(Cha)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="investigation">
                             <input type="checkbox" name="attr_investigation_prof" title="@{investigation_prof}" value="(@{pb}*@{investigation_type})">
                             <span name='attr_investigation_bonus' title='@{investigation_bonus}'>0</span>
-                            <button type='roll' name='roll_investigation' value='@{wtype}&{template:simple} {{rname=^{investigation-u}}} {{mod=@{investigation_bonus}}} {{r1=[[@{d20}+@{investigation_bonus}@{pbd_safe}]]}} @{rtype}+@{investigation_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='investigation-core'>Investigation <span>(Int)</span></button>
+                            <button type='roll' name='roll_investigation' value='@{wtype}&{template:simple} {{rname=^{investigation-u}}} {{mod=@{investigation_bonus}}} {{r1=[[@{d20}+@{investigation_bonus}@{pbd_safe}]]}} @{rtype}+@{investigation_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='investigation-core'>Investigation <span>(Int)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="medicine">
                             <input type="checkbox" name="attr_medicine_prof" title="@{medicine_prof}" value="(@{pb}*@{medicine_type})">
                             <span name='attr_medicine_bonus' title='@{medicine_bonus}'>0</span>
-                            <button type='roll' name='roll_medicine' value='@{wtype}&{template:simple} {{rname=^{medicine-u}}} {{mod=@{medicine_bonus}}} {{r1=[[@{d20}+@{medicine_bonus}@{pbd_safe}]]}} @{rtype}+@{medicine_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='medicine-core'>Medicine <span>(Wis)</span></button>
+                            <button type='roll' name='roll_medicine' value='@{wtype}&{template:simple} {{rname=^{medicine-u}}} {{mod=@{medicine_bonus}}} {{r1=[[@{d20}+@{medicine_bonus}@{pbd_safe}]]}} @{rtype}+@{medicine_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='medicine-core'>Medicine <span>(Wis)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="nature">
                             <input type="checkbox" name="attr_nature_prof" title="@{nature_prof}" value="(@{pb}*@{nature_type})">
                             <span name='attr_nature_bonus' title='@{nature_bonus}'>0</span>
-                            <button type='roll' name='roll_nature' value='@{wtype}&{template:simple} {{rname=^{nature-u}}} {{mod=@{nature_bonus}}} {{r1=[[@{d20}+@{nature_bonus}@{pbd_safe}]]}} @{rtype}+@{nature_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='nature-core'>Nature <span>(Int)</span></button>
+                            <button type='roll' name='roll_nature' value='@{wtype}&{template:simple} {{rname=^{nature-u}}} {{mod=@{nature_bonus}}} {{r1=[[@{d20}+@{nature_bonus}@{pbd_safe}]]}} @{rtype}+@{nature_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='nature-core'>Nature <span>(Int)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="perception">
                             <input type="checkbox" name="attr_perception_prof" title="@{perception_prof}" value="(@{pb}*@{perception_type})">
                             <span name='attr_perception_bonus' title='@{perception_bonus}'>0</span>
-                            <button type='roll' name='roll_perception' value='@{wtype}&{template:simple} {{rname=^{perception-u}}} {{mod=@{perception_bonus}}} {{r1=[[@{d20}+@{perception_bonus}@{pbd_safe}]]}} @{rtype}+@{perception_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='perception-core'>Perception <span>(Wis)</span></button>
+                            <button type='roll' name='roll_perception' value='@{wtype}&{template:simple} {{rname=^{perception-u}}} {{mod=@{perception_bonus}}} {{r1=[[@{d20}+@{perception_bonus}@{pbd_safe}]]}} @{rtype}+@{perception_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='perception-core'>Perception <span>(Wis)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="performance">
                             <input type="checkbox" name="attr_performance_prof" title="@{performance_prof}" value="(@{pb}*@{performance_type})">
                             <span name='attr_performance_bonus' title='@{performance_bonus}'>0</span>
-                            <button type='roll' name='roll_performance' value='@{wtype}&{template:simple} {{rname=^{performance-u}}} {{mod=@{performance_bonus}}} {{r1=[[@{d20}+@{performance_bonus}@{pbd_safe}]]}} @{rtype}+@{performance_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='performance-core'>Performance <span>(Cha)</span></button>
+                            <button type='roll' name='roll_performance' value='@{wtype}&{template:simple} {{rname=^{performance-u}}} {{mod=@{performance_bonus}}} {{r1=[[@{d20}+@{performance_bonus}@{pbd_safe}]]}} @{rtype}+@{performance_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='performance-core'>Performance <span>(Cha)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="persuasion">
                             <input type="checkbox" name="attr_persuasion_prof" title="@{persuasion_prof}" value="(@{pb}*@{persuasion_type})">
                             <span name='attr_persuasion_bonus' title='@{persuasion_bonus}'>0</span>
-                            <button type='roll' name='roll_persuasion' value='@{wtype}&{template:simple} {{rname=^{persuasion-u}}} {{mod=@{persuasion_bonus}}} {{r1=[[@{d20}+@{persuasion_bonus}@{pbd_safe}]]}} @{rtype}+@{persuasion_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='persuasion-core'>Persuasion <span>(Wis)</span></button>
+                            <button type='roll' name='roll_persuasion' value='@{wtype}&{template:simple} {{rname=^{persuasion-u}}} {{mod=@{persuasion_bonus}}} {{r1=[[@{d20}+@{persuasion_bonus}@{pbd_safe}]]}} @{rtype}+@{persuasion_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='persuasion-core'>Persuasion <span>(Wis)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="religion">
                             <input type="checkbox" name="attr_religion_prof" title="@{religion_prof}" value="(@{pb}*@{religion_type})">
                             <span name='attr_religion_bonus' title='@{religion_bonus}'>0</span>
-                            <button type='roll' name='roll_religion' value='@{wtype}&{template:simple} {{rname=^{religion-u}}} {{mod=@{religion_bonus}}} {{r1=[[@{d20}+@{religion_bonus}@{pbd_safe}]]}} @{rtype}+@{religion_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='religion-core'>Religion <span>(Int)</span></button>
+                            <button type='roll' name='roll_religion' value='@{wtype}&{template:simple} {{rname=^{religion-u}}} {{mod=@{religion_bonus}}} {{r1=[[@{d20}+@{religion_bonus}@{pbd_safe}]]}} @{rtype}+@{religion_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='religion-core'>Religion <span>(Int)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="sleight_of_hand">
                             <input type="checkbox" name="attr_sleight_of_hand_prof" title="@{sleight_of_hand_prof}" value="(@{pb}*@{sleight_of_hand_type})">
                             <span name='attr_sleight_of_hand_bonus' title='@{sleight_of_hand_bonus}'>0</span>
-                            <button type='roll' name='roll_sleight_of_hand' value='@{wtype}&{template:simple} {{rname=^{sleight_of_hand-u}}} {{mod=@{sleight_of_hand_bonus}}} {{r1=[[@{d20}+@{sleight_of_hand_bonus}@{pbd_safe}]]}} @{rtype}+@{sleight_of_hand_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='sleight_of_hand-core'>Sleight of Hand <span>(Dex)</span></button>
+                            <button type='roll' name='roll_sleight_of_hand' value='@{wtype}&{template:simple} {{rname=^{sleight_of_hand-u}}} {{mod=@{sleight_of_hand_bonus}}} {{r1=[[@{d20}+@{sleight_of_hand_bonus}@{pbd_safe}]]}} @{rtype}+@{sleight_of_hand_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='sleight_of_hand-core'>Sleight of Hand <span>(Dex)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="stealth">
                             <input type="checkbox" name="attr_stealth_prof" title="@{stealth_prof}" value="(@{pb}*@{stealth_type})">
                             <span name='attr_stealth_bonus' title='@{stealth_bonus}'>0</span>
-                            <button type='roll' name='roll_stealth' value='@{wtype}&{template:simple} {{rname=^{stealth-u}}} {{mod=@{stealth_bonus}}} {{r1=[[@{d20}+@{stealth_bonus}@{pbd_safe}]]}} @{rtype}+@{stealth_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='stealth-core'>Stealth <span>(Dex)</span></button>
+                            <button type='roll' name='roll_stealth' value='@{wtype}&{template:simple} {{rname=^{stealth-u}}} {{mod=@{stealth_bonus}}} {{r1=[[@{d20}+@{stealth_bonus}@{pbd_safe}]]}} @{rtype}+@{stealth_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='stealth-core'>Stealth <span>(Dex)</span></button>
                         </div>
                         <div class="skill" data-i18n-list-item="survival">
                             <input type="checkbox" name="attr_survival_prof" title="@{survival_prof}" value="(@{pb}*@{survival_type})">
                             <span name='attr_survival_bonus' title='@{survival_bonus}'>0</span>
-                            <button type='roll' name='roll_survival' value='@{wtype}&{template:simple} {{rname=^{survival-u}}} {{mod=@{survival_bonus}}} {{r1=[[@{d20}+@{survival_bonus}@{pbd_safe}]]}} @{rtype}+@{survival_bonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}' data-i18n='survival-core'>Survival <span>(Wis)</span></button>
+                            <button type='roll' name='roll_survival' value='@{wtype}&{template:simple} {{rname=^{survival-u}}} {{mod=@{survival_bonus}}} {{r1=[[@{d20}+@{survival_bonus}@{pbd_safe}]]}} @{rtype}+@{survival_bonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}' data-i18n='survival-core'>Survival <span>(Wis)</span></button>
                         </div>
                     </div>
                     <div class="label">
@@ -1290,7 +1292,7 @@
                             </div>
                         </div>
                         <div class="display">
-                            <button type="roll" name="roll_tool" value="@{wtype}&{template:simple} {{rname=@{toolname}}} {{mod=@{toolbonus}}} {{r1=[[@{d20}+@{toolbonus}@{pbd_safe}]]}} @{rtype}+@{toolbonus}@{pbd_safe}]]}} @{global_skill_mod} @{charname_output}">
+                            <button type="roll" name="roll_tool" value="@{wtype}&{template:simple} {{rname=@{toolname}}} {{mod=@{toolbonus}}} {{r1=[[@{d20}+@{toolbonus}@{pbd_safe}]]}} @{rtype}+@{toolbonus}@{pbd_safe}]]}} {{global=@{global_skill_mod}}} @{charname_output}">
                                 <span name="attr_toolname" style="width: 100px;"></span>
                                 <input type="text" name="attr_toolbonus" style="width: 40px; text-align: center;">
                                 <input type="text" name="attr_toolattr" style="width: 80px;">
@@ -1300,9 +1302,11 @@
                 </fieldset>
                 <input type="hidden" class="toggleflag" name="attr_global_skill_mod_flag">
                 <div class="hidden globalattack">
-                    <input type="checkbox" name="attr_global_skill_mod" value="{{global=[[@{global_skill_mod_field}]]}}">
-                    <textarea type="textarea" name="attr_global_skill_mod_field" placeholder="1d4[GUIDANCE]"></textarea>
-                    <span class="label" data-i18n="global-skill-u">GLOBAL SKILL MODIFIER</span>
+                    <fieldset class="repeating_skillmod">
+                        <input type="checkbox" name="attr_active_flag" value="1">
+                        <textarea type="textarea" name="attr_rollstring" placeholder="1d4[GUIDANCE]"></textarea>
+                        <span class="label" data-i18n="global-skill-u">GLOBAL SKILL MODIFIER</span>
+                    </fieldset>
                 </div>
                 <div class="label" style="position: absolute; bottom: 0px; width: 100%; text-align: center;">
                     <span data-i18n="tool-prof-u" style="display: inline;">TOOL PROFICIENCIES</span><span style="display: inline;"> & </span><span data-i18n="custom-skills-u" style="display: inline;">CUSTOM SKILLS</span>
@@ -1397,7 +1401,7 @@
                         <input type="checkbox" name="attr_deathsave_fail2">
                         <input type="checkbox" name="attr_deathsave_fail3">
                     </div>
-                    <button type="roll" name="roll_death_save" style="margin-top: 6px;" value="@{wtype}&{template:simple} {{rname=^{death-save-u}}} {{mod=@{death_save_bonus}}} {{r1=[[@{d20}+@{death_save_bonus}[MOD]@{globalsavingthrowbonus}]]}} {{normal=1}} @{global_save_mod} @{charname_output}" data-i18n="death-saves-u">DEATH SAVES</button> 
+                    <button type="roll" name="roll_death_save" style="margin-top: 6px;" value="@{wtype}&{template:simple} {{rname=^{death-save-u}}} {{mod=@{death_save_bonus}}} {{r1=[[@{d20}+@{death_save_bonus}[MOD]@{globalsavingthrowbonus}]]}} {{normal=1}} {{global=@{global_save_mod}}} @{charname_output}" data-i18n="death-saves-u">DEATH SAVES</button> 
                 </div>
             </div>
             <input type="hidden" class="exhaustion-toggle" name="attr_exhaustion_toggle" value="0">
@@ -4549,7 +4553,9 @@
 <input type="hidden" name="attr_global_damage_mod_crit" value="0">
 <input type="hidden" name="attr_global_damage_mod_roll" value="0">
 <input type="hidden" name="attr_global_damage_mod_type" value="">
-<input type="hidden" name="attr_global_attack_mod" value="0">
+<input type="hidden" name="attr_global_attack_mod" value="">
+<input type="hidden" name="attr_global_save_mod" value="">
+<input type="hidden" name="attr_global_skill_mod" value="">
 
 <input type="hidden" name="attr_exhaustion_1" value="">
 <input type="hidden" name="attr_exhaustion_2" value="">
@@ -6296,6 +6302,100 @@
         });
     });
 
+    on("change:repeating_skillmod", eventinfo => {
+        getSectionIDs("skillmod", ids => {
+            if(ids) {
+                let fields = {};
+                let attr_name_list = [];
+                ids.forEach(id => {
+                    fields[id] = {};
+                    attr_name_list.push(`repeating_skillmod_${id}_active_flag`, `repeating_skillmod_${id}_rollstring`);
+                });
+                getAttrs(attr_name_list, attrs => {
+                    let regex = /^repeating_skillmod_(.+)_(active_flag|rollstring)$/;
+                    _.each(attrs, (obj, name) => {
+                        let r = regex.exec(name);
+                        if(r) {
+                            fields[r[1]][r[2]] = obj;
+                        }
+                    });
+
+                    let update = {global_skill_mod: ""};
+                    _.each(fields, (element) => {
+                        if(element.active_flag != "0") {
+                            if(element.rollstring && element.rollstring !== "") { update["global_skill_mod"] += element.rollstring + "+"; }
+                        }
+                    });
+                    if(update["global_skill_mod"] !== "") {
+                        update["global_skill_mod"] = "[[" + update["global_skill_mod"].replace(/\+(?=$)/, '') + "]]";
+                    }
+                    setAttrs(update, {silent:true});
+                });
+            }
+        });
+    });
+
+    on("change:global_skill_mod_flag", eventinfo => {
+        if(eventinfo.newValue === "1") {
+            getSectionIDs("skillmod", ids => {
+                if(!ids || ids.length === 0) {
+                    let update = {};
+                    let rowid = generateRowID();
+                    update[`repeating_skillmod_${rowid}_rollstring`] = "1d4[GUIDANCE]";
+                    update[`repeating_skillmod_${rowid}_active_flag`] = "1";
+                    setAttrs(update);
+                }
+            });
+        }
+    });
+
+    on("change:repeating_savemod", eventinfo => {
+        getSectionIDs("savemod", ids => {
+            if(ids) {
+                let fields = {};
+                let attr_name_list = [];
+                ids.forEach(id => {
+                    fields[id] = {};
+                    attr_name_list.push(`repeating_savemod_${id}_active_flag`, `repeating_savemod_${id}_rollstring`);
+                });
+                getAttrs(attr_name_list, attrs => {
+                    let regex = /^repeating_savemod_(.+)_(active_flag|rollstring)$/;
+                    _.each(attrs, (obj, name) => {
+                        let r = regex.exec(name);
+                        if(r) {
+                            fields[r[1]][r[2]] = obj;
+                        }
+                    });
+
+                    let update = {global_save_mod: ""};
+                    _.each(fields, (element) => {
+                        if(element.active_flag != "0") {
+                            if(element.rollstring && element.rollstring !== "") { update["global_save_mod"] += element.rollstring + "+"; }
+                        }
+                    });
+                    if(update["global_save_mod"] !== "") {
+                        update["global_save_mod"] = "[[" + update["global_save_mod"].replace(/\+(?=$)/, '') + "]]";
+                    }
+                    setAttrs(update, {silent:true});
+                });
+            }
+        });
+    });
+
+    on("change:global_save_mod_flag", eventinfo => {
+        if(eventinfo.newValue === "1") {
+            getSectionIDs("savemod", ids => {
+                if(!ids || ids.length === 0) {
+                    let update = {};
+                    let rowid = generateRowID();
+                    update[`repeating_savemod_${rowid}_rollstring`] = "1d4[BLESS]";
+                    update[`repeating_savemod_${rowid}_active_flag`] = "1";
+                    setAttrs(update);
+                }
+            });
+        }
+    });
+
     on("change:repeating_attackmod", function(eventinfo) {
         getSectionIDs("attackmod", ids => {
             if(ids) {
@@ -6320,10 +6420,7 @@
                             if(element.rollstring && element.rollstring !== "") { update["global_attack_mod"] += element.rollstring + "+"; }
                         }
                     });
-                    if(update["global_attack_mod"] === "") {
-                        update["global_attack_mod"] = "[[0]]";
-                    }
-                    else {
+                    if(update["global_attack_mod"] !== "") {
                         update["global_attack_mod"] = "[[" + update["global_attack_mod"].replace(/\+(?=$)/, '') + "]]";
                     }
                     setAttrs(update, {silent:true});
