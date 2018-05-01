@@ -5900,7 +5900,7 @@
         update_tool(tool_id);
     });
      
-    on("change:repeating_attack:atkname change:repeating_attack:atkflag change:repeating_attack:atkattr_base change:repeating_attack:atkmod change:repeating_attack:atkmagic change:repeating_attack:atkprofflag change:repeating_attack:dmgflag change:repeating_attack:dmgbase change:repeating_attack:dmgattr change:repeating_attack:dmgmod change:repeating_attack:dmgtype change:repeating_attack:dmg2flag change:repeating_attack:dmg2base change:repeating_attack:dmg2attr change:repeating_attack:dmg2mod change:repeating_attack:dmg2type change:repeating_attack:saveflag change:repeating_attack:savedc change:repeating_attack:saveflat change:repeating_attack:dmgcustcrit change:repeating_attack:dmg2custcrit change:repeating_attack:ammo", function(eventinfo) {
+    on("change:repeating_attack:atkname change:repeating_attack:atkflag change:repeating_attack:atkattr_base change:repeating_attack:atkmod change:repeating_attack:atkmagic change:repeating_attack:atkprofflag change:repeating_attack:dmgflag change:repeating_attack:dmgbase change:repeating_attack:dmgattr change:repeating_attack:dmgmod change:repeating_attack:dmgtype change:repeating_attack:dmg2flag change:repeating_attack:dmg2base change:repeating_attack:dmg2attr change:repeating_attack:dmg2mod change:repeating_attack:dmg2type change:repeating_attack:saveflag change:repeating_attack:savedc change:repeating_attack:saveflat change:repeating_attack:dmgcustcrit change:repeating_attack:dmg2custcrit change:repeating_attack:ammo change:repeating_attack:saveattr", function(eventinfo) {
         if(eventinfo.sourceType === "sheetworker") {
             return;
         }
@@ -6947,7 +6947,6 @@
                 if(v.drop_name) {update["repeating_spell-" + lvl + "_" + id + "_spellname"] = v.drop_name};
                 if(v.drop_spellritualflag) {update["repeating_spell-" + lvl + "_" + id + "_spellritual"] = "{{ritual=1}}"};
                 if(v.drop_spellschool) {update["repeating_spell-" + lvl + "_" + id + "_spellschool"] = v.drop_spellschool.toLowerCase()};
-                console.log(update);
                 if(v.drop_spellcastingtime) {update["repeating_spell-" + lvl + "_" + id + "_spellcastingtime"] = v.drop_spellcastingtime};
                 if(v.drop_range) {update["repeating_spell-" + lvl + "_" + id + "_spellrange"] = v.drop_range};
                 if(v.drop_spelltarget) {update["repeating_spell-" + lvl + "_" + id + "_spelltarget"] = v.drop_spelltarget};
@@ -8234,7 +8233,7 @@
             };
 
             if(v["repeating_attack_" + attackid + "_saveflag"] && v["repeating_attack_" + attackid + "_saveflag"] != "0") {
-                update["repeating_spell-" + lvl + "_" + spellid + "_spellsave"] = v["repeating_attack_" + attackid + "_saveflag"];
+                update["repeating_spell-" + lvl + "_" + spellid + "_spellsave"] = v["repeating_attack_" + attackid + "_saveattr"];
             }
             else {
                 update["repeating_spell-" + lvl + "_" + spellid + "_spellsave"] = "";
