@@ -513,5 +513,7 @@
 	"yes": "Yes",
 	"cancel": "Cancel",
 	"choose": "Choose",
-	"innate:-u": "INNATE:"
+	"innate:-u": "INNATE:",
+	"mod:-u": "MOD:",
+	"hpmods:-u": "HP MODIFIERS:"
 }

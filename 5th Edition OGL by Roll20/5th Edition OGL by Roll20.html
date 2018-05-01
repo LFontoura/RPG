@@ -4176,6 +4176,17 @@
                         <option value="Charisma" data-i18n="cha-u">CHA</option>
                     </select>
                 </div>
+                <div class="row">
+                    <span data-i18n="hpmods:-u">HP MODIFIERS:</span>
+                </div>
+                <fieldset class="repeating_hpmod">
+                    <div style="padding-left: 15px;">
+                        <span data-i18n="source:-u">SOURCE:</span>
+                        <input type="text" name="attr_source">
+                        <span data-i18n="mod:-u">MOD:</span>
+                        <input type="text" name="attr_mod" class="num">
+                    </div>
+                </fieldset>
                 <div class="row title">
                     <span data-i18n="attribute-opts-u">ATTRIBUTE OPTIONS</span>
                 </div>
@@ -5679,6 +5690,28 @@
 
     on("change:constitution_base change:constitution_bonus", function() {
         update_attr("constitution");
+    });
+
+    on("change:constitution_mod", eventinfo => {
+        getSectionIDs("hpmod", ids => {
+            let hp_attrs = _.map(ids, id => [`repeating_hpmod_${id}_source`, `repeating_hpmod_${id}_mod`]);
+            getAttrs(_.flatten(hp_attrs), attrs => {
+                let update = {};
+                let constitution_mod_found = false;
+                _.each(hp_attrs, element => {
+                    if(attrs[element[0]] === "CON") {
+                        update[element[1]] = eventinfo.newValue;
+                        constitution_mod_found = true;
+                    }
+                });
+                if(!constitution_mod_found) {
+                    let rowid = generateRowID();
+                    update[`repeating_hpmod_${rowid}_source`] = "CON";
+                    update[`repeating_hpmod_${rowid}_mod`] = eventinfo.newValue;
+                }
+                setAttrs(update);
+            });
+        });
     });
 
     on("change:constitution", function() {
