@@ -1560,6 +1560,7 @@
                     <input type="hidden" name="attr_itemid">
                     <input type="hidden" name="attr_spellid">
                     <input type="hidden" name="attr_spell_innate">
+                    <input type="hidden" name="attr_versatile_alt">
                     <button type="roll" name="roll_attack_dmg" style="display: none;" value="@{rollbase_dmg}"></button>
                     <button type="roll" name="roll_attack_crit" style="display: none;" value="@{rollbase_crit}"></button>
                 </fieldset>
@@ -4500,6 +4501,10 @@
 <input type="hidden" name="attr_drop_attack_type" accept="Spell Attack">
 <input type="hidden" name="attr_drop_damage2" accept="Secondary Damage">
 <input type="hidden" name="attr_drop_damagetype2" accept="Secondary Damage Type">
+<input type="hidden" name="attr_drop_alt_damage" accept="Alternate Damage">
+<input type="hidden" name="attr_drop_alt_damagetype" accept="Alternate Damage Type">
+<input type="hidden" name="attr_drop_alt_damage2" accept="Alternate Secondary Damage">
+<input type="hidden" name="attr_drop_alt_damagetype2" accept="Alternate Secondary Damage Type">
 <input type="hidden" name="attr_drop_spellritualflag" accept="Ritual">
 <input type="hidden" name="attr_drop_spellschool" accept="School">
 <input type="hidden" name="attr_drop_spellcastingtime" accept="Casting Time">
@@ -5933,7 +5938,7 @@
         update_tool(tool_id);
     });
      
-    on("change:repeating_attack:atkname change:repeating_attack:atkflag change:repeating_attack:atkattr_base change:repeating_attack:atkmod change:repeating_attack:atkmagic change:repeating_attack:atkprofflag change:repeating_attack:dmgflag change:repeating_attack:dmgbase change:repeating_attack:dmgattr change:repeating_attack:dmgmod change:repeating_attack:dmgtype change:repeating_attack:dmg2flag change:repeating_attack:dmg2base change:repeating_attack:dmg2attr change:repeating_attack:dmg2mod change:repeating_attack:dmg2type change:repeating_attack:saveflag change:repeating_attack:savedc change:repeating_attack:saveflat change:repeating_attack:dmgcustcrit change:repeating_attack:dmg2custcrit change:repeating_attack:ammo change:repeating_attack:saveattr", function(eventinfo) {
+    on("change:repeating_attack:atkname change:repeating_attack:atkflag change:repeating_attack:atkattr_base change:repeating_attack:atkmod change:repeating_attack:atkmagic change:repeating_attack:atkprofflag change:repeating_attack:dmgflag change:repeating_attack:dmgbase change:repeating_attack:dmgattr change:repeating_attack:dmgmod change:repeating_attack:dmgtype change:repeating_attack:dmg2flag change:repeating_attack:dmg2base change:repeating_attack:dmg2attr change:repeating_attack:dmg2mod change:repeating_attack:dmg2type change:repeating_attack:saveflag change:repeating_attack:savedc change:repeating_attack:saveflat change:repeating_attack:dmgcustcrit change:repeating_attack:dmg2custcrit change:repeating_attack:ammo change:repeating_attack:saveattr change:repeating_attack:atkrange", function(eventinfo) {
         if(eventinfo.sourceType === "sheetworker") {
             return;
         }
@@ -6494,11 +6499,11 @@
     
     on("remove:repeating_inventory", function(eventinfo) {
         var itemid = eventinfo.sourceAttribute.substring(20, 40);
-        var attackid = eventinfo.removedInfo && eventinfo.removedInfo["repeating_inventory_" + itemid + "_itemattackid"] ? eventinfo.removedInfo["repeating_inventory_" + itemid + "_itemattackid"] : undefined;
+        var attackids = eventinfo.removedInfo && eventinfo.removedInfo["repeating_inventory_" + itemid + "_itemattackid"] ? eventinfo.removedInfo["repeating_inventory_" + itemid + "_itemattackid"] : undefined;
         var resourceid = eventinfo.removedInfo && eventinfo.removedInfo["repeating_inventory_" + itemid + "_itemresourceid"] ? eventinfo.removedInfo["repeating_inventory_" + itemid + "_itemresourceid"] : undefined;
         
-        if(attackid) {
-            remove_attack(attackid);
+        if(attackids) {
+            _.each(attackids.split(","), (value) => remove_attack(value));
         }
         if(resourceid) {
             remove_resource(resourceid);
@@ -6838,9 +6843,9 @@
         var update = {};
         var id = generateRowID();
         
-        getAttrs(["drop_name","drop_weight","drop_properties","drop_modifiers","drop_content","drop_itemtype","drop_damage","drop_damagetype","drop_damage2","drop_damagetype2","drop_range","drop_ac","drop_spellritualflag", "drop_spellschool", "drop_spellcastingtime", "drop_spelltarget", "drop_spellcomp", "drop_spellcomp_materials", "drop_spellconcentrationflag", "drop_spellduration", "drop_spellhealing", "drop_spelldmgmod", "drop_spellsave", "drop_spellsavesuccess", "drop_spellhldie", "drop_spellhldietype", "drop_spellhlbonus", "drop_spelllevel", "drop_spell_damage_progression", "drop_attack_type", "drop_speed", "drop_str", "drop_dex", "drop_con", "drop_int", "drop_wis", "drop_cha", "drop_vulnerabilities", "drop_resistances", "drop_immunities", "drop_condition_immunities", "drop_languages", "drop_challenge_rating", "drop_size", "drop_type", "drop_alignment", "drop_hp", "drop_saving_throws", "drop_senses", "drop_passive_perception", "drop_skills", "drop_token_size", "character_id", "drop_actions", "drop_legendary_actions", "drop_legendary_actions_desc", "drop_reactions", "drop_traits", "npc_legendary_actions", "strength_mod", "dexterity_mod", "npc"], function(v) {
+        getAttrs(["drop_name","drop_weight","drop_properties","drop_modifiers","drop_content","drop_itemtype","drop_damage","drop_damagetype","drop_damage2","drop_damagetype2", "drop_alt_damage", "drop_alt_damagetype", "drop_alt_damage2", "drop_alt_damagetype2","drop_range","drop_ac","drop_spellritualflag", "drop_spellschool", "drop_spellcastingtime", "drop_spelltarget", "drop_spellcomp", "drop_spellcomp_materials", "drop_spellconcentrationflag", "drop_spellduration", "drop_spellhealing", "drop_spelldmgmod", "drop_spellsave", "drop_spellsavesuccess", "drop_spellhldie", "drop_spellhldietype", "drop_spellhlbonus", "drop_spelllevel", "drop_spell_damage_progression", "drop_attack_type", "drop_speed", "drop_str", "drop_dex", "drop_con", "drop_int", "drop_wis", "drop_cha", "drop_vulnerabilities", "drop_resistances", "drop_immunities", "drop_condition_immunities", "drop_languages", "drop_challenge_rating", "drop_size", "drop_type", "drop_alignment", "drop_hp", "drop_saving_throws", "drop_senses", "drop_passive_perception", "drop_skills", "drop_token_size", "character_id", "drop_actions", "drop_legendary_actions", "drop_legendary_actions_desc", "drop_reactions", "drop_traits", "npc_legendary_actions", "strength_mod", "dexterity_mod", "npc"], function(v) {
             if(category === "Items") {
-                if(+v["npc"] === 0) {
+                if(v["npc"] === "0") {
                     update["tab"] = "core";
                     if(v.drop_name) {update["repeating_inventory_" + id + "_itemname"] = v.drop_name};
                     if(v.drop_weight) {update["repeating_inventory_" + id + "_itemweight"] = v.drop_weight};
@@ -6856,12 +6861,22 @@
                     if(v.drop_damagetype && v.drop_damagetype != "") {mods += ", Damage Type: " + v.drop_damagetype};
                     if(v.drop_damage2 && v.drop_damage2 != "") {mods += ", Secondary Damage: " + v.drop_damage2};
                     if(v.drop_damagetype2 && v.drop_damagetype2 != "") {mods += ", Secondary Damage Type: " + v.drop_damagetype2};
+                    if(v.drop_alt_damage && v.drop_alt_damage != "") {mods += ", Alternate Damage: " + v.drop_alt_damage};
+                    if(v.drop_alt_damagetype && v.drop_alt_damagetype != "") {mods += ", Alternate Damage Type: " + v.drop_alt_damagetype};
+                    if(v.drop_alt_damage2 && v.drop_alt_damage2 != "") {mods += ", Alternate Secondary Damage: " + v.drop_alt_damage2};
+                    if(v.drop_alt_damagetype2 && v.drop_alt_damagetype2 != "") {mods += ", Alternate Secondary Damage Type: " + v.drop_alt_damagetype2};
                     if(v.drop_range && v.drop_range != "") {mods += ", Range: " + v.drop_range};
                     if(v.drop_modifiers && v.drop_modifiers != "") {mods += ", " + v.drop_modifiers};
                     update["repeating_inventory_" + id + "_itemmodifiers"] = mods;
                     if(v.drop_itemtype.indexOf("Weapon") > -1) {
                         update["repeating_inventory_" + id + "_hasattack"] = 1;
-                        callbacks.push( function() {create_attack_from_item(id);} );
+                        callbacks.push( function() {
+                            if(v.drop_alt_damage && v.drop_alt_damage !== "") {
+                                create_attack_from_item(id, {versatile: true});
+                            } else {
+                                create_attack_from_item(id);
+                            }
+                        } );
                     }
                     else if(v.drop_itemtype.indexOf("Ammunition") > -1) {
                         update["repeating_inventory_" + id + "_useasresource"] = 1;
@@ -6913,16 +6928,16 @@
                             update["repeating_npcaction_" + rowid + "_attack_tohit"] = weapon_attr_mod;
 
                             if(options && options.versatile === 2) {
-                                if(v.drop_damage2) { update["repeating_npcaction_" + rowid + "_attack_damage"] = v.drop_damage2 + "+" + weapon_attr_mod; }
-                                if(v.drop_damagetype2) {
-                                    update["repeating_npcaction_" + rowid + "_attack_damagetype"] = v.drop_damagetype2;
-                                } else if(v.drop_damagetype) {
-                                    update["repeating_npcaction_" + rowid + "_attack_damagetype"] = v.drop_damagetype;
-                                }
+                                if(v.drop_alt_damage) { update["repeating_npcaction_" + rowid + "_attack_damage"] = v.drop_alt_damage + "+" + weapon_attr_mod; }
+                                if(v.drop_alt_damagetype) { update["repeating_npcaction_" + rowid + "_attack_damagetype"] = v.drop_alt_damagetype; }
+                                if(v.drop_alt_damage2) { update["repeating_npcaction_" + rowid + "_attack_damage2"] = v.drop_alt_damage2; }
+                                if(v.drop_alt_damagetype2) { update["repeating_npcaction_" + rowid + "_attack_damagetype2"] = v.drop_alt_damagetype2; }
                             }
                             else {
                                 if(v.drop_damage) { update["repeating_npcaction_" + rowid + "_attack_damage"] = v.drop_damage + "+" + weapon_attr_mod; }
                                 if(v.drop_damagetype) {update["repeating_npcaction_" + rowid + "_attack_damagetype"] = v.drop_damagetype; }
+                                if(v.drop_damage2) { update["repeating_npcaction_" + rowid + "_attack_damage2"] = v.drop_damage2; }
+                                if(v.drop_damagetype2) { update["repeating_npcaction_" + rowid + "_attack_damagetype2"] = v.drop_damagetype2; }
                             }
 
                             if(v.drop_modifiers) {
@@ -6951,19 +6966,8 @@
                         if(v.drop_properties && new RegExp('\\bthrown\\b', 'i').test(v.drop_properties)) {
                             make_npc_attack_from_item(generateRowID(), {thrown: true});
                         }
-                        if(v.drop_damage2) {
-                            if(versatile) {
-                                make_npc_attack_from_item(generateRowID(), {versatile:2})
-                            }
-                            else {
-                                update["repeating_npcaction_" + id + "_attack_damage2"] = v.drop_damage2;
-                                if(v.drop_damagetype2) {
-                                    update["repeating_npcaction_" + id + "_attack_damagetype2"] = v.drop_damagetype2;
-                                }
-                                else {
-                                    update["repeating_npcaction_" + id + "_attack_damagetype2"] = update["repeating_npcaction_" + id + "_attack_damagetype"];
-                                }
-                            }
+                        if(versatile && v.drop_alt_damage) {
+                            make_npc_attack_from_item(generateRowID(), {versatile:2})
                         }
                         
                         callbacks.push(() => check_itemmodifiers(v.drop_modifiers), () => update_npc_action("all"));
@@ -7126,7 +7130,7 @@
                         senses = senses + ", passive Perception " + v["drop_passive_perception"];
                     }
                     else {
-                        senses = v["drop_passive_perception"];
+                        senses = "passive Perception " + v["drop_passive_perception"];
                     }
                 }
                 update["npc_senses"] = senses;
@@ -7540,6 +7544,8 @@
         update["drop_itemtype"] = "";
         update["drop_damage"] = "";
         update["drop_damagetype"] = "";
+        update["drop_alt_damage"] = "";
+        update["drop_alt_damagetype"] = "";
         update["drop_range"] = "";
         update["drop_ac"] = "";
         update["drop_actions"] = "";
@@ -7550,6 +7556,8 @@
         update["drop_attack_type"] = "";
         update["drop_damage2"] = "";
         update["drop_damagetype2"] = "";
+        update["drop_alt_damage2"] = "";
+        update["drop_alt_damagetype2"] = "";
         update["drop_spellritualflag"] = "";
         update["drop_spellschool"] = "";
         update["drop_spellcastingtime"] = "";
@@ -7631,18 +7639,29 @@
         });
     };
 
-    var create_attack_from_item = function(itemid) {
+    var create_attack_from_item = function(itemid, options) {
         var update = {};
         var newrowid = generateRowID();
         update["repeating_inventory_" + itemid + "_itemattackid"] = newrowid;
-        setAttrs(update, {}, update_attack_from_item(itemid, newrowid, true));
+        if(options && options.versatile) {
+            let newrowid2 = generateRowID();
+            update["repeating_inventory_" + itemid + "_itemattackid"] += "," + newrowid2;
+            setAttrs(update, {}, () => {
+                update_attack_from_item(itemid, newrowid, {newattack: true, versatile: "primary"});
+                update_attack_from_item(itemid, newrowid2, {newattack: true, versatile: "secondary"});
+            });
+        }
+        else {
+            setAttrs(update, {}, update_attack_from_item(itemid, newrowid, {newattack: true}));
+        }
     };
 
-    var update_attack_from_item = function(itemid, attackid, newattack) {
-        getAttrs(["repeating_inventory_" + itemid + "_itemname","repeating_inventory_" + itemid + "_itemproperties","repeating_inventory_" + itemid + "_itemmodifiers"], function(v) {
+    var update_attack_from_item = function(itemid, attackid, options) {
+        getAttrs(["repeating_inventory_" + itemid + "_itemname","repeating_inventory_" + itemid + "_itemproperties","repeating_inventory_" + itemid + "_itemmodifiers", "strength", "dexterity"], function(v) {
             var update = {}; var itemtype; var damage; var damagetype; var damage2; var damagetype2; var attackmod; var damagemod; var range;
-
-            if(newattack) {
+            let alt = {};
+            
+            if(options && options.newattack) {
                 update["repeating_attack_" + attackid + "_options-flag"] = "0";
                 update["repeating_attack_" + attackid + "_itemid"] = itemid;
             } 
@@ -7651,6 +7670,10 @@
                 var mods = v["repeating_inventory_" + itemid + "_itemmodifiers"].split(",");
                 _.each(mods, function(mod) {
                     if(mod.indexOf("Item Type:") > -1) {itemtype = mod.split(":")[1].trim()}
+                    else if(mod.indexOf("Alternate Secondary Damage Type:") > -1) {alt.damagetype2 = mod.split(":")[1].trim();}
+                    else if(mod.indexOf("Alternate Secondary Damage:") > -1) {alt.damage2 = mod.split(":")[1].trim();}
+                    else if(mod.indexOf("Alternate Damage Type:") > -1) {alt.damagetype = mod.split(":")[1].trim();}
+                    else if(mod.indexOf("Alternate Damage:") > -1) {alt.damage = mod.split(":")[1].trim();}
                     else if(mod.indexOf("Secondary Damage Type:") > -1) {damagetype2 = mod.split(":")[1].trim()}
                     else if(mod.indexOf("Secondary Damage:") > -1) {damage2 = mod.split(":")[1].trim()}
                     else if(mod.indexOf("Damage Type:") > -1) {damagetype = mod.split(":")[1].trim()}
@@ -7663,25 +7686,50 @@
             
             if(v["repeating_inventory_" + itemid + "_itemname"] && v["repeating_inventory_" + itemid + "_itemname"] != "") {
                 update["repeating_attack_" + attackid + "_atkname"] = v["repeating_inventory_" + itemid + "_itemname"];
+                if(options && options.versatile === "primary") {
+                    update["repeating_attack_" + attackid + "_atkname"] += " (One-Handed)";
+                } else if(options && options.versatile === "secondary") {
+                    update["repeating_attack_" + attackid + "_atkname"] += " (Two-Handed)";
+                }
             }
-            if(damage) {
-                update["repeating_attack_" + attackid + "_dmgbase"] = damage;
+            if(options && options.versatile === "secondary") {
+                if(alt.damage) {
+                    update["repeating_attack_" + attackid + "_dmgbase"] = alt.damage;
+                }
+                if(alt.damagetype) {
+                    update["repeating_attack_" + attackid + "_dmgtype"] = alt.damagetype;
+                }
+                if(alt.damage2) {
+                    update["repeating_attack_" + attackid + "_dmg2base"] = alt.damage2;
+                    update["repeating_attack_" + attackid + "_dmg2attr"] = 0;
+                    update["repeating_attack_" + attackid + "_dmg2flag"] = "{{damage=1}} {{dmg2flag=1}}";
+                }
+                if(alt.damagetype2) {
+                    update["repeating_attack_" + attackid + "_dmg2type"] = alt.damagetype2;
+                }
+                update["repeating_attack_" + attackid + "_versatile_alt"] = "1";
             }
-            if(damagetype) {
-                update["repeating_attack_" + attackid + "_dmgtype"] = damagetype;
-            }
-            if(damage2) {
-                update["repeating_attack_" + attackid + "_dmg2base"] = damage2;
-                update["repeating_attack_" + attackid + "_dmg2attr"] = 0;
-                update["repeating_attack_" + attackid + "_dmg2flag"] = "{{damage=1}} {{dmg2flag=1}}";
-            }
-            if(damagetype2) {
-                update["repeating_attack_" + attackid + "_dmg2type"] = damagetype2;
+            else {
+                if(damage) {
+                    update["repeating_attack_" + attackid + "_dmgbase"] = damage;
+                }
+                if(damagetype) {
+                    update["repeating_attack_" + attackid + "_dmgtype"] = damagetype;
+                }
+                if(damage2) {
+                    update["repeating_attack_" + attackid + "_dmg2base"] = damage2;
+                    update["repeating_attack_" + attackid + "_dmg2attr"] = 0;
+                    update["repeating_attack_" + attackid + "_dmg2flag"] = "{{damage=1}} {{dmg2flag=1}}";
+                }
+                if(damagetype2) {
+                    update["repeating_attack_" + attackid + "_dmg2type"] = damagetype2;
+                }
             }
             if(range) {
                 update["repeating_attack_" + attackid + "_atkrange"] = range;
             }
-            if( (itemtype && itemtype.indexOf("Ranged") > -1) || (v["repeating_inventory_" + itemid + "_itemproperties"] && v["repeating_inventory_" + itemid + "_itemproperties"].toLowerCase().indexOf("finesse") > -1) ) {
+            let finesse = v["repeating_inventory_" + itemid + "_itemproperties"] && /finesse/i.test(v["repeating_inventory_" + itemid + "_itemproperties"]);
+            if( (itemtype && itemtype.indexOf("Ranged") > -1) || (finesse && +v.dexterity > +v.strength)) {
                 update["repeating_attack_" + attackid + "_atkattr_base"] = "@{dexterity_mod}";
                 update["repeating_attack_" + attackid + "_dmgattr"] = "@{dexterity_mod}";
             }
@@ -7691,14 +7739,17 @@
             }
             if(attackmod && damagemod && attackmod == damagemod) {
                 update["repeating_attack_" + attackid + "_atkmagic"] = parseInt(attackmod, 10);
+                update["repeating_attack_" + attackid + "_atkmod"] = "";
+                update["repeating_attack_" + attackid + "_dmgmod"] = "";
             }
             else {
                 if(attackmod) {
                     update["repeating_attack_" + attackid + "_atkmod"] = parseInt(attackmod, 10);
                 }
                 if(damagemod) {
-                    update["repeating_attack_" + attackid + "_dmgmod"] = parseInt(attackmod, 10);
+                    update["repeating_attack_" + attackid + "_dmgmod"] = parseInt(damagemod, 10);
                 }
+                update["repeating_attack_" + attackid + "_atkmagic"] = "";
             }
             var callback = function() {update_attacks(attackid, "item")};
             setAttrs(update, {silent: true}, callback); 
@@ -8277,9 +8328,9 @@
     };
 
     var update_item_from_attack = function(itemid, attackid) {
-        getAttrs(["repeating_attack_" + attackid + "_atkname", "repeating_attack_" + attackid + "_dmgbase", "repeating_attack_" + attackid + "_dmg2base", "repeating_attack_" + attackid + "_dmgtype", "repeating_attack_" + attackid + "_dmg2type", "repeating_attack_" + attackid + "_atkrange", "repeating_attack_" + attackid + "_atkmod", "repeating_attack_" + attackid + "_dmgmod", "repeating_inventory_" + itemid + "_itemmodifiers"], function(v) {
+        getAttrs(["repeating_attack_" + attackid + "_atkname", "repeating_attack_" + attackid + "_dmgbase", "repeating_attack_" + attackid + "_dmg2base", "repeating_attack_" + attackid + "_dmgtype", "repeating_attack_" + attackid + "_dmg2type", "repeating_attack_" + attackid + "_atkrange", "repeating_attack_" + attackid + "_atkmod", "repeating_attack_" + attackid + "_dmgmod", "repeating_inventory_" + itemid + "_itemmodifiers", "repeating_attack_" + attackid + "_versatile_alt", "repeating_inventory_" + itemid + "_itemproperties", "repeating_attack_" + attackid + "_atkmagic"], function(v) {
             var update = {};
-            var mods = [];
+            var mods = v["repeating_inventory_" + itemid + "_itemmodifiers"];
             var damage = v["repeating_attack_" + attackid + "_dmgbase"] ? v["repeating_attack_" + attackid + "_dmgbase"] : 0;
             var damage2 = v["repeating_attack_" + attackid + "_dmg2base"] ? v["repeating_attack_" + attackid + "_dmg2base"] : 0;
             var damagetype = v["repeating_attack_" + attackid + "_dmgtype"] ? v["repeating_attack_" + attackid + "_dmgtype"] : 0;
@@ -8287,109 +8338,149 @@
             var range = v["repeating_attack_" + attackid + "_atkrange"] ? v["repeating_attack_" + attackid + "_atkrange"] : 0;
             var attackmod = v["repeating_attack_" + attackid + "_atkmod"] ? v["repeating_attack_" + attackid + "_atkmod"] : 0;
             var damagemod = v["repeating_attack_" + attackid + "_dmgmod"] ? v["repeating_attack_" + attackid + "_dmgmod"] : 0;
+            var magicmod = v["repeating_attack_" + attackid + "_atkmagic"] ? v["repeating_attack_" + attackid + "_atkmagic"] : 0;
             var atktype = "";
+            let altprefix = v["repeating_attack_" + attackid + "_versatile_alt"] === "1" ? "Alternate " : "";
 
-            update["repeating_inventory_" + itemid + "_itemname"] = v["repeating_attack_" + attackid + "_atkname"];
-
-            if(v["repeating_inventory_" + itemid + "_itemmodifiers"] && v["repeating_inventory_" + itemid + "_itemmodifiers"] != "") {
-                var mods = _.uniq(v["repeating_inventory_" + itemid + "_itemmodifiers"].split(",").map((item) => item.trim()));
-                if(mods.indexOf("Item Type: Ranged Weapon") > -1) {atktype = "Ranged";} else if(mods.indexOf("Item Type: Melee Weapon") > -1) {atktype = "Melee";} else if(v["repeating_attack_" + attackid + "_atkrange"]) {atktype = "Ranged";} else {atktype = "Melee";};
-                var to_be_removed = [];
-                _.each(mods, function(mod, i) {
-                    if(mod.indexOf("Secondary Damage Type:") > -1) {
-                        if(damagetype2 != 0) {
-                            mods[i] = mod.substring(0, mod.lastIndexOf(":") + 1) + " " + damagetype2;
-                            damagetype2 = 0;
-                        }
-                        else {
-                            to_be_removed.push(i);
-                        }
-                    }
-                    else if(mod.indexOf("Secondary Damage:") > -1) {
-                        if(damage2 != 0) {
-                            mods[i] = mod.substring(0, mod.lastIndexOf(":") + 1) + " " + damage2;
-                            damage2 = 0;
-                        }
-                        else {
-                            to_be_removed.push(i);
-                        }
-                    }
-                    else if(mod.indexOf("Damage Type:") > -1) {
-                        if(damagetype != 0) {
-                            mods[i] = mod.substring(0, mod.lastIndexOf(":") + 1) + " " + damagetype;
-                            damagetype = 0;
-                        }
-                        else {
-                            to_be_removed.push(i);
-                        }
-                    }
-                    else if(mod.indexOf("Damage:") > -1) {
-                        if(damage != 0) {
-                            mods[i] = mod.substring(0, mod.lastIndexOf(":") + 1) + " " + damage;
-                            damage = 0;
-                        }
-                        else {
-                            to_be_removed.push(i);
-                        }
-                    }
-                    else if(mod.indexOf("Range:") > -1) {
-                        if(range != 0) {
-                            mods[i] = mod.substring(0, mod.lastIndexOf(":") + 1) + " " + range;
-                            range = 0;
-                        }
-                        else {
-                            to_be_removed.push(i);
-                        }
-                    }
-                    else if(mod.indexOf(" Attacks ") > -1) {
-                        if(attackmod != 0) {
-                            mods[i] = mod.substring(0, mod.lastIndexOf(" Attacks ") + 1) + " " + attackmod;
-                            attackmod = 0;
-                        }
-                        else {
-                            to_be_removed.push(i);
-                        }
-                    }
-                    else if(mod.indexOf(" Damage ") > -1) {
-                        if(damagemod != 0) {
-                            mods[i] = mod.substring(0, mod.lastIndexOf(" Damage ") + 1) + " " + damagemod;
-                            damagemod = 0;
-                        }
-                        else {
-                            to_be_removed.push(i);
-                        }
-                    };
-                });
-
-                mods = _(mods).filter(function(mod) {return to_be_removed.indexOf(mods.indexOf(mod)) === -1 });
+            if(/Alternate Damage:/i.test(v["repeating_inventory_" + itemid + "_itemmodifiers"])) {
+                update["repeating_inventory_" + itemid + "_itemname"] = v["repeating_attack_" + attackid + "_atkname"].replace(/\s*(?:\(One-Handed\)|\(Two-Handed\))/, "");
+            } else {
+                update["repeating_inventory_" + itemid + "_itemname"] = v["repeating_attack_" + attackid + "_atkname"];
             }
 
-            if(damage != 0) {
-                mods.push("Damage: " + damage);
+            let attack_type_regex = /(?:^|,)\s*Item Type: (Melee|Ranged) Weapon(?:,|$)/i;
+            let attack_type_results = attack_type_regex.exec(v["repeating_inventory_" + itemid + "_itemmodifiers"]);
+            atktype = attack_type_results ? attack_type_results[1] : "";
+            if(mods) {
+                mods = mods.split(",");
+            } else {
+                mods = [];
             }
-            if(damagetype != 0) {
-                mods.push("Damage Type: " + damagetype);
+            
+            let damage_regex = new RegExp("^\\s*" + altprefix + "Damage:\\s*(.+)$", "i");
+            let damage_found = false;
+            for(let i = 0; i < mods.length; i++) {
+                if(damage_found = damage_regex.exec(mods[i])) {
+                    if(damage !== 0) {
+                        mods[i] = mods[i].replace(damage_found[1], damage);
+                    } else {
+                        mods.splice(i, 1);
+                    }
+                    break;
+                }
             }
-            if(damage2 != 0) {
-                mods.push("Secondary Damage: " + damage2);
+            if(!damage_found && damage !== 0) {
+                mods.push(altprefix + "Damage: " + damage);
             }
-            if(damagetype != 0) {
-                mods.push("Secondary Damage Type: " + damagetype2);
+            
+            let damage2_regex = new RegExp("^\\s*" + altprefix + "Secondary Damage:\\s*(.+)$", "i");
+            let damage2_found = false;
+            for(let i = 0; i < mods.length; i++) {
+                if(damage2_found = damage2_regex.exec(mods[i])) {
+                    if(damage2 !== 0) {
+                        mods[i] = mods[i].replace(damage2_found[1], damage2);
+                    } else {
+                        mods.splice(i, 1);
+                    }
+                    break;
+                }
             }
-            if(range != 0) {
+            if(!damage2_found && damage2 !== 0) {
+                mods.push(altprefix + "Secondary Damage: " + damage2);
+            }
+
+            let dmgtype_regex = new RegExp("^\\s*" + altprefix + "Damage Type:\\s*(.+)$", "i");
+            let dmgtype_found = false;
+            for(let i = 0; i < mods.length; i++) {
+                if(dmgtype_found = dmgtype_regex.exec(mods[i])) {
+                    if(damagetype !== 0) {
+                        mods[i] = mods[i].replace(dmgtype_found[1], damagetype);
+                    } else {
+                        mods.splice(i, 1);
+                    }
+                    break;
+                }
+            }
+            if(!dmgtype_found && damagetype !== 0) {
+                mods.push(altprefix + "Damage Type: " + damagetype);
+            }
+
+            let dmgtype2_regex = new RegExp("^\\s*" + altprefix + "Secondary Damage Type:\\s*(.+)$", "i");
+            let dmgtype2_found = false;
+            for(let i = 0; i < mods.length; i++) {
+                if(dmgtype2_found = dmgtype2_regex.exec(mods[i])) {
+                    if(damagetype2 !== 0) {
+                        mods[i] = mods[i].replace(dmgtype_found[1], damagetype);
+                    } else {
+                        mods.splice(i, 1);
+                    }
+                    break;
+                }
+            }
+            if(!dmgtype2_found && damagetype2 !== 0) {
+                mods.push(altprefix + "Secondary Damage Type: " + damagetype2);
+            }
+
+            let range_found = false;
+            for(let i = 0; i < mods.length; i++) {
+                if(range_found = /^\s*Range:\s*(.+)$/i.exec(mods[i])) {
+                    if(range !== 0) {
+                        mods[i] = mods[i].replace(range_found[1], range);
+                    } else {
+                        mods.splice(i, 1);
+                    }
+                    break;
+                }
+            }
+            if(!range_found && range !== 0) {
                 mods.push("Range: " + range);
             }
-            if(attackmod != 0) {
-                mods.push(atktype + " Attacks +" + attackmod);
+
+            let attackmod_regex = new RegExp("^\\s*(?:" + (atktype !== "" ? atktype + "|" : "") + "Weapon) Attacks \\+?(.+)$", "i");
+            let attackmod_found = false;
+            for(let i = 0; i < mods.length; i++) {
+                if(attackmod_found = attackmod_regex.exec(mods[i])) {
+                    if(magicmod !== 0 || attackmod !== 0) {
+                        mods[i] = mods[i].replace(attackmod_found[1], magicmod !== 0 ? magicmod : attackmod);
+                    } else {
+                        mods.splice(i, 1);
+                    }
+                    break;
+                }
             }
-            if(damagemod != 0) {
-                mods.push(atktype + " Damage +" + damagemod);
+            if(!attackmod_found && (magicmod !== 0 || attackmod !== 0)) {
+                let properties = v["repeating_inventory_" + itemid + "_itemproperties"];
+                if(properties && /Thrown/i.test(properties)) {
+                    mods.push("Weapon Attacks: " + (magicmod !== 0 ? magicmod : attackmod));
+                }
+                else {
+                    mods.push(atktype + " Attacks: " + (magicmod !== 0 ? magicmod : attackmod));
+                }
             }
 
-            mods = mods.join(", ");
-            if(mods.length > 0) {
-                update["repeating_inventory_" + itemid + "_itemmodifiers"] = mods;
+            let damagemod_regex = new RegExp("^\\s*(?:" + (atktype !== "" ? atktype + "|" : "") + "Weapon) Damage \\+?(.+)$", "i");
+            let damagemod_found = false;
+            for(let i = 0; i < mods.length; i++) {
+                if(damagemod_found = damagemod_regex.exec(mods[i])) {
+                    if(magicmod !== 0 || damagemod !== 0) {
+                        mods[i] = mods[i].replace(damagemod_found[1], magicmod !== 0 ? magicmod : attackmod);
+                    } else {
+                        mods.splice(i, 1);
+                    }
+                    break;
+                }
             }
+            if(!damagemod_found && (magicmod !== 0 || damagemod !== 0)) {
+                let properties = v["repeating_inventory_" + itemid + "_itemproperties"];
+                if(properties && /Thrown/i.test(properties)) {
+                    mods.push("Weapon Damage: " + (magicmod !== 0 ? magicmod : damagemod));
+                }
+                else {
+                    mods.push(atktype + " Damage: " + (magicmod !== 0 ? magicmod : damagemod));
+                }
+            }
+
+            update["repeating_inventory_" + itemid + "_itemmodifiers"] = mods.join(",");
 
             setAttrs(update, {silent: true});
         });
