@@ -9710,6 +9710,23 @@
         return out;
     };
 
+    var get_class_level = function(class_name, callback) {
+        getAttrs(["class", "base_level", "multiclass1_flag", "multiclass1", "multiclass1_lvl", "multiclass2_flag", "multiclass2", "multiclass2_lvl", "multiclass3_flag", "multiclass3", "multiclass3_lvl"], attrs => {
+            let regex = new RegExp(class_name, "i");
+            if(regex.test(attrs["class"])) {
+                callback(attrs.base_level);
+            } else if(attrs.multiclass1_flag && attrs.multiclass1_flag !== "0" && regex.test(attrs.multiclass1)) {
+                callback(attrs.multiclass1_lvl);
+            } else if(attrs.multiclass2_flag && attrs.multiclass2_flag !== "0" && regex.test(attrs.multiclass2)) {
+                callback(attrs.multiclass2_lvl);
+            } else if(attrs.multiclass3_flag && attrs.multiclass3_flag !== "0" && regex.test(attrs.multiclass3)) {
+                callback(attrs.multiclass3_lvl);
+            } else {
+                callback("0");
+            }
+        });
+    };
+
     var v2_old_values_check = function() {
         // update_attacks("all");
         var update = {};
