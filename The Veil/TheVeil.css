@@ -45,7 +45,11 @@ input[name="attr_sheetVersion"][value="Veil2020"]:checked ~ div.sheet-container 
 
 
 .sheet-container {
-	postion: relative;
+	position: relative;
+	top: 2.5em;
+	left: -2.2em;
+	width: 100%;
+	padding: 0em 2.2em 0em 2.2em;
 }
 
 .sheet-container:after {
@@ -56,7 +60,7 @@ input[name="attr_sheetVersion"][value="Veil2020"]:checked ~ div.sheet-container 
     left: 0;
     /*background-image: url(/wp-content/uploads/2010/11/tandem.jpg); */
     width: 100%;
-    height: 200%;
+    height: 110%;
     opacity : 0.5;
     z-index: -1;
 }
@@ -696,6 +700,7 @@ div.sheet-verticalStates {
 }
 
 .sheet-columnHalves div.sheet-miscNotes div.repitem {
+	flex: 1 0 50%;
 	width: 50%;
 }
 .sheet-columnHalves div.sheet-miscNotes div.repitem textarea {
@@ -777,7 +782,8 @@ input.sheet-narrowInput {
 
 .sheet-improvements div,
 .sheet-miscNotes div {
-	display: inline-block;
+	display: flex;
+	flex-wrap: wrap;
 	line-height: 0px;
 	vertical-align: top;
 }
@@ -826,7 +832,32 @@ input.sheet-bioInputField {
 input.sheet-playbookDetailTitle {
     font-size: 14px;
     width: 90%;
-	
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+}
+
+.sheet-obligationValues {
+	display: flex;
+	width: 90%;
+}
+
+.sheet-obligationValues span {
+	font-size: 10px;
+}
+
+.sheet-obligationValues input[type=number] {
+	-moz-appearance: textfield;
+	appearance: textfield;
+	width: 2em;
+	text-align: center;
+	margin-bottom: 0.2em;
+}
+
+.sheet-obligationValues input[type=number]::-webkit-inner-spin-button,
+.sheet-obligationValues input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	appearance: none;
+	margin: 0;
 }
 
 
@@ -1264,9 +1295,9 @@ input.sheet-tab4:checked ~ div.sheet-container div.sheet-tab4 {
 div.sheet-tab-widget-container {
 	display: inline-block;
 	position: relative;
+	top: -6em;
 	width: 20%;	
-	height: 95px;
-	margin-top: -80px;
+	height: 55px;
 	/* border: 2px solid blue; */
 	text-align: center;
 }
@@ -1426,6 +1457,8 @@ div.sheet-tab-content
 }
 
 .itemcontrol .repcontrol_del {
+    position: absolute;
+    right: 0.7em;
     font-size: 10px;
     margin-top: 3px;
     padding: 0px;
@@ -1434,6 +1467,8 @@ div.sheet-tab-content
 }
 
 .itemcontrol .repcontrol_move {
+    position: absolute;
+    left: 0.7em;
     font-size: 10px;
     margin-top: 3px;
     padding: 0px;

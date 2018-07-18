@@ -1019,11 +1019,15 @@ _/    _/  _/_/_/_/  _/    _/  _/_/_/    _/_/_/_/  _/    _/
 						<fieldset class="repeating_GiriDetails">
 							<div class="sheet-revealOnChecked">
 								<div class="sheet-popupMoveDesc"><span class="sheet-MoveTitle" name="attr_GiriDetailTitle"></span><span class="sheet-popupText" name="attr_GiriQuestions"></span></div>
-							</div>							
+							</div>
 							<div class="sheet-hideOnChecked">
-								<h2 style="display: inline-block;">								
+								<h2 style="display: inline-block;">
 									<input type="text" name="attr_GiriDetailTitle" class="sheet-playbookDetailTitle" placeholder="Obligation Question"/>
 								</h2>
+								<div class="obligationValues">
+									<span>Owed to them: </span><input type="number" name="attr_obligation-owed-out" min="0" placeholder="0">
+									<span>Owed to me: </span><input type="number" name="attr_obligation-owed-in" min="0" placeholder="0">
+								</div>
 								<textarea name="attr_GiriQuestions" rows="2" placeholder="Obligation (Giri) Question Details" ></textarea>							
 							</div>
 						</fieldset>
