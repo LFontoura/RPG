@@ -4798,6 +4798,7 @@ body:not(:-moz-handler-blocked) .sheet-charmancer .sheet-bottombar {
 }
 
 .sheet-charmancer .sheet-levels-multiclass .sheet-hp-flag[value="roll"] ~ div > button[type="roll"],
+.sheet-charmancer .sheet-levels-multiclass .sheet-hp-flag[value="roll"] ~ button[type="roll"],
 .sheet-charmancer .sheet-levels-multiclass .sheet-hp-flag[value="average"] ~ button[type="action"] {
     background-color: #EC2127;
     color           : #fff;
@@ -4908,4 +4909,11 @@ body:not(:-moz-handler-blocked) .sheet-charmancer .sheet-bottombar {
     font-size: 14px;
     margin: .5em 0;
 }
+.sheet-charmancer .sheet-choices .sheet-subclass1_features_title,
+.sheet-charmancer .sheet-choices .sheet-subclass2_features_title,
+.sheet-charmancer .sheet-choices .sheet-subclass3_features_title,
+.sheet-charmancer .sheet-choices .sheet-subclass4_features_title {
+    margin-top: .5em;
+}
+
 
