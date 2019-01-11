@@ -1597,22 +1597,32 @@
                     </fieldset>
                 </div>
                 <input type="hidden" class="toggleflag" name="attr_global_damage_mod_flag">
-                <div class="hidden textbox globalattack">
+                <div class="hidden globalattack global-dmg">
                     <span class="label" data-i18n="global-damage-u">GLOBAL DAMAGE MODIFIER</span>
                     <fieldset class="repeating_damagemod">
                         <div class="global-mod">
                             <input type="checkbox" name="attr_options-flag" class="options-flag" checked="checked" style="top: -15px;"><span>y</span>
                             <input type="checkbox" name="attr_global_damage_active_flag" value="1" class="active-flag">
                             <div class="options">
-                                <textarea type="textarea" name="attr_global_damage_rollstring" placeholder="1d6[SNEAK ATTACK]"></textarea>
-                                <div class="row" style="margin-bottom: 5px;">
-                                    <span style="display: inline; margin-left: 25px;" data-i18n="type:-u">TYPE:</span>
-                                    <input type="text" name="attr_global_damage_type" value="">
+                                <div class="row">
+                                    <span data-i18n="name:-u">NAME:</span>
+                                    <input type="text" name="attr_global_damage_name" value="" placeholder="Sneak Attack">
+                                </div>
+                                <div class="row">
+                                    <span data-i18n="dmg:-u">DAMAGE:</span>
+                                    <input type="text" name="attr_global_damage_damage" value="" placeholder="1d6">
+                                </div>
+                                <div class="row">
+                                    <span data-i18n="type:-u">TYPE:</span>
+                                    <input type="text" name="attr_global_damage_type" value="" placeholder="Sneak">
                                 </div>
                             </div>
-                            <div class="display" style="margin-bottom: 2px; width: 85%">
-                                <span class="title" name="attr_global_damage_rollstring" style="width: 110px; padding-right: 0px;"></span>
-                                <span class="subheader" name="attr_global_damage_type" style="padding-right: 0px;"></span>
+                            <div class="display">
+                                <span class="title" name="attr_global_damage_name"></span>
+                                <span class="subheader">
+                                    <span name="attr_global_damage_damage"></span>
+                                    <span name="attr_global_damage_type"></span>
+                                </span>
                             </div>
                         </div>
                     </fieldset>
@@ -6438,15 +6448,13 @@
         update_globaldamage();
     });
 
-    on("change:global_damage_mod_flag", function(eventinfo) {
+ on("change:global_damage_mod_flag", function(eventinfo) {
         if(eventinfo.newValue === "1") {
             getSectionIDs("damagemod", function(ids) {
                 if(!ids || ids.length === 0) {
                     var update = {};
                     var rowid = generateRowID();
                     update[`repeating_damagemod_${rowid}_global_damage_active_flag`] = "1";
-                    update[`repeating_damagemod_${rowid}_global_damage_rollstring`] = "1d6[SNEAK ATTACK]";
-                    update[`repeating_damagemod_${rowid}_global_damage_type`] = "Sneak";
                     setAttrs(update);
                 }
             });
@@ -6460,7 +6468,7 @@
                 setAttrs(update);
             });
         }
-    });
+    }); 
 
     on("change:exhaustion_toggle", function(eventinfo) {
         if(eventinfo.newValue !== "0") {
@@ -7437,7 +7445,7 @@
 
     var handle_drop = function(category, eventinfo) {
 
-        getAttrs(["speed", "drop_name", "drop_data", "drop_content", "character_id", "npc_legendary_actions", "strength_mod", "dexterity_mod", "npc", "base_level", "strength_base", "dexterity_base", "constitution_base", "wisdom_base", "intelligence_base", "charisma_base", "class_resource_name", "other_resource_name"], function(v) {
+        getAttrs(["speed", "drop_name", "drop_data", "drop_content", "character_id", "npc_legendary_actions", "strength_mod", "dexterity_mod", "npc", "base_level", "strength_base", "dexterity_base", "constitution_base", "wisdom_base", "intelligence_base", "charisma_base", "class_resource_name", "other_resource_name", "multiclass1_lvl", "multiclass2_lvl", "multiclass3_lvl"], function(v) {
             var pagedata = {};
             try {
                 pagedata = JSON.parse(v.drop_data);
@@ -7502,13 +7510,8 @@
             return finalAttrib;
         };
         var numUses = function(uses_string) {
-            var attribs = ["strength", "dexterity", "constitution", "wisdom", "intelligence", "charisma"];
-            uses_string = uses_string ? uses_string.toLowerCase() : "";
-            _.each(attribs, function(attrib) {
-                var attribMod = Math.floor((parseInt(currentData[attrib + "_base"]) - 10) / 2);
-                if (attribMod < 0) attribMod = 0;
-                uses_string = uses_string.replace(attrib, attribMod);
-            });
+            uses_string = parseValues(uses_string);
+
             var terms = uses_string.split("+");
             var total = 0;
             _.each(terms, function(term) {
@@ -7516,11 +7519,23 @@
             });
             return uses_string === "" || uses_string === "-" ? uses_string : total;
         };
+        var parseValues = function(uses_string) {
+            var attribs = ["strength", "dexterity", "constitution", "wisdom", "intelligence", "charisma"];
+            uses_string = uses_string ? uses_string.toLowerCase() : "";
+            _.each(attribs, function(attrib) {
+                var attribMod = Math.floor((parseInt(currentData[attrib + "_base"]) - 10) / 2);
+                if (attribMod < 0 || isNaN(attribMod)) attribMod = 0;
+                uses_string = uses_string.replace(attrib, attribMod);
+            });
+            uses_string = uses_string.replace(/half_level/g, Math.floor(classlevel/2));
+            return uses_string.replace(/level/g, classlevel);
+        };
         var category = page.data["Category"];
         var callbacks = [];
         var update = {};
         var id = generateRowID();
         var blobs = {};
+        var classlevel = currentData.base_level ? parseInt(currentData.base_level) : 1;
         repeating.traits = repeating.traits ? repeating.traits : [];
         update["drop_category"] = "";
         update["drop_name"] = "";
@@ -8269,6 +8284,7 @@
             if(page.data.multiclass) {
                 if(page.name && page.name !== "") { update[page.data.multiclass] = page.name; }
                 update[page.data.multiclass + "_flag"] = "1";
+                classlevel = parseInt(currentData[page.data.multiclass + "_lvl"]);
             } else {
                 if(page.name && page.name !== "") { update["class"] = page.name; }
                 if(page.data["Hit Die"] && page.data["Hit Die"] !== "") {
@@ -8294,6 +8310,7 @@
         if(category === "Subclasses") {
             if(page.data.multiclass) {
                 if(page.name && page.name !== "") { update[page.data.multiclass + "_subclass"] = page.name; }
+                classlevel = parseInt(currentData[page.data.multiclass + "_lvl"]);
             } else {
                 if(page.name && page.name !== "") { update["subclass"] = page.name; };
             }
@@ -8515,11 +8532,13 @@
                 _.each(repeating.damagemod, function(name, rowid) {
                     if(name.toLowerCase() === dmgmod["Name"].toLowerCase()) id = rowid;
                 });
-                update["repeating_damagemod_" + id + "_global_damage_rollstring"] = `${dmgmod["Damage"]}[${dmgmod["Name"]}]`;
+                update["repeating_damagemod_" + id + "_global_damage_name"] = `${dmgmod["Name"]}`;
+                update["repeating_damagemod_" + id + "_global_damage_damage"] = `${parseValues(dmgmod["Damage"])}`;
                 if(dmgmod["Active"] !== "false") update["repeating_damagemod_" + id + "_global_damage_active_flag"] = "1";
                 update["repeating_damagemod_" + id + "_options-flag"] = "0";
-                update["repeating_damagemod_" + id + "_global_damage_type"] = dmgmod["Name"];
+                update["repeating_damagemod_" + id + "_global_damage_type"] = dmgmod["Type"] ? dmgmod["Type"] : dmgmod["Name"];
                 update["global_damage_mod_flag"] = "1";
+                repeating.damagemod[id] = dmgmod["Name"];
             };
             if(blob["Resources"]) {
                 var resources = jsonparse(blob["Resources"]);
@@ -8545,9 +8564,8 @@
                         repeating.resource[id] = {left: value["Name"], right: ""};
                     }
                     update[section + "_name"] = value["Name"];
-                    var uses = numUses(value["Uses"]);
-                    update[section] = uses;
-                    update[section + "_max"] = uses;
+                    if(value["Uses"]) update[section] = numUses(value["Uses"]);
+                    update[section + "_max"] = value["Max"] ? numUses(value["Max"]) : numUses(value["Uses"]);
                 });
             };
             if(blob["Custom AC"]) {
@@ -8594,7 +8612,7 @@
                 } else if (blob["Initiative"].toLowerCase() === "disadvantage") {
                     update["initiative_style"] = "{@{d20},@{d20}}kl1";
                 } else {
-                    update.initmod = blob["Initiative"];
+                    update.initmod = numUses(blob["Initiative"]);
                 }
             };
             if(blob["Carry Multiplier"]) {
@@ -8688,6 +8706,12 @@
             };
             if(blob["Global Save Mod"]) {
                 update["globalsavemod"] = numUses(blob["Global Save Mod"]);
+            };
+            if(blob["Proficiency Bonus"]) {
+                var bonus = jsonparse(blob["Proficiency Bonus"]);
+                _.each(bonus, function(value, prof) {
+                    update[prof.replace(/ /g, "_").toLowerCase() + "_flat"] = numUses(value);
+                });
             };
             /**/
         });
@@ -10861,27 +10885,31 @@
                 var attr_name_list = [];
                 ids.forEach(function(id) {
                     fields[id] = {};
-                    attr_name_list.push(`repeating_damagemod_${id}_global_damage_active_flag`, `repeating_damagemod_${id}_global_damage_rollstring`, `repeating_damagemod_${id}_global_damage_type`);
+                    attr_name_list.push(`repeating_damagemod_${id}_global_damage_active_flag`, `repeating_damagemod_${id}_global_damage_name`, `repeating_damagemod_${id}_global_damage_damage`, `repeating_damagemod_${id}_global_damage_type`);
                 });
+
                 getAttrs(attr_name_list, function(attrs) {
-                    var regex = /^repeating_damagemod_(.+)_global_damage_(active_flag|rollstring|type)$/;
+                    var regex = /^repeating_damagemod_(.+)_global_damage_(active_flag|name|damage|type)$/;
                     _.each(attrs, function(obj, name) {
                         var r = regex.exec(name);
                         if(r) {
                             fields[r[1]][r[2]] = obj;
-                        }
+                        };
                     });
 
                     var update = {global_damage_mod_roll: "", global_damage_mod_crit: "", global_damage_mod_type: ""};
+
                     console.log("GLOBALDAMAGE");
                     _.each(fields, function(element) {
                         if(element.active_flag != "0") {
-                            if(element.rollstring && element.rollstring !== "") { update["global_damage_mod_roll"] += element.rollstring + "+"; }
+                            if(element.name && element.name !== "") { update["global_damage_mod_roll"] += element.damage + '[' + element.name + ']' + "+"; }
                             if(element.type && element.type !== "") { update["global_damage_mod_type"] += element.type + "/"; }
                         }
                     });
+
                     update["global_damage_mod_roll"] = update["global_damage_mod_roll"].replace(/\+(?=$)/, '');
                     update["global_damage_mod_type"] = update["global_damage_mod_type"].replace(/\/(?=$)/, '');
+
                     // Remove any non-roll damage modifiers from the global damage modifier for the crit rolls
                     // Will also remove any labels attached to these non-roll damage modifiers
                     update["global_damage_mod_crit"] = update["global_damage_mod_roll"].replace(/(?:[+\-*\/%]|\*\*|^)\s*\d+(?:\[.*?])?(?!d\d+)/gi, '')
@@ -11345,6 +11373,30 @@
         });
     };
 
+    var upgrade_to_2_7 = function(doneupdating) {
+        getSectionIDs("damagemod", function(ids) {
+            console.log("Version 2.7 UPGRADE");
+            let getArray = [];
+            ids.forEach(sectionid => {
+                getArray.push(`repeating_damagemod_${sectionid}_global_damage_rollstring`);
+            });
+           getAttrs(getArray, function(v) {
+                let set = {};
+                if (v[`${getArray}`]) {
+                    getArray.forEach(attr => {
+                        const value = v[`${attr}`], brackets = value.split('['), damage = brackets[0], name = brackets[1].slice(0, -1), section = attr.slice(0, -10);
+
+                        set[`${section}name`] = name;
+                        set[`${section}damage`] = damage;
+                    });
+                };
+                setAttrs(set);
+
+                doneupdating();
+            });
+        });
+    };
+
     var no_version_bugfix = function(doneupdating) {
         getAttrs(["npc","class"], function(v) {
             if(v["npc"] && v["npc"] != "0" || v["class"] && v["class"] != "") {
@@ -11359,8 +11411,8 @@
 
     var versioning = function(finished) {
         getAttrs(["version"], function(v) {
-            if(v["version"] === "2.6") {
-                setAttrs({version: "2.6"}, function(){
+            if(v["version"] === "2.7") {
+                setAttrs({version: "2.7"}, function(){
                     finished();
                 });
                 console.log("5th Edition OGL by Roll20 v" + v["version"]);
@@ -11370,6 +11422,14 @@
                 console.log("NO VERSION FOUND");
                 no_version_bugfix(function() {
                     versioning(finished);
+                });
+            }
+            else if(v["version"] === "2.6") {
+                console.log("UPGRADING TO v2.7");
+                upgrade_to_2_7(function() {
+                    setAttrs({version: "2.7"}, function() {
+                        versioning(finished);
+                    });
                 });
             }
             else if(v["version"] === "2.5") {
@@ -12147,6 +12207,8 @@
                     setCharmancerText(repupdate);
                     handleProficiencies(blob, rowid);
                 });
+            } else {
+                handleProficiencies(blob);
             }
         });
         _.each(sorted.traits, function(blob, name) {
@@ -14834,7 +14896,8 @@
         update["class1_selector"] = '<span class="sheet-compendium-class-name">' + baseclass + '</span>';
         if (previous["subclass"] && previous["custom_class"] === "0") { 
             update[`subclass1_selector`] = `<div>` + previous["subclass"] + `</div>`;
-            if(mancerdata["lp-levels"] && mancerdata["lp-levels"].values["class1_subclass"] !== "Subclasses" + previous["subclass"])set["class1_subclass"] = "Subclasses:" + previous["subclass"]; 
+            if((mancerdata["lp-levels"] && mancerdata["lp-levels"].values["class1_subclass"] !== "Subclasses" + previous["subclass"])
+                || !mancerdata["lp-levels"]) set["class1_subclass"] = "Subclasses:" + previous["subclass"]; 
         };
         const multiclass = parseInt(previous["multiclass1_flag"]) + parseInt(previous["multiclass2_flag"]) + parseInt(previous["multiclass3_flag"]);
         set["multiclass"] = mancerdata["lp-levels"] && mancerdata["lp-levels"].values["multiclass"] ? mancerdata["lp-levels"].values["multiclass"] : multiclass;
@@ -16539,6 +16602,9 @@
                     v[ability + "_mod"] = abilities[ability];
                 });
                 v.base_level = set["base_level"];
+                v["multiclass1_lvl"] = initial["multiclass1_lvl"];
+                v["multiclass2_lvl"] = initial["multiclass2_lvl"];
+                v["multiclass3_lvl"] = initial["multiclass3_lvl"];
                 v.npc = "0";
                 v["class_resource_name"] = previous["class_resource_name"];
                 v["other_resource_name"] = previous["other_resource_name"];
@@ -16829,6 +16895,7 @@
         set["lpmancer_status"] = "";
         set["charactermancer_step"] = "lp-welcome";
         console.log(allDrops);
+        console.log(allPageData);
         _.each(removesections, function(rowid) {
             removeRepeatingRow(rowid);
         });
