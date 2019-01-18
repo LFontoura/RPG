@@ -4993,3 +4993,14 @@ div.sheet-globaldisplay span {
     color: red;
     margin-top: -.5em;
 }
+
+.sheet-display .sheet-subheader span.sheet-link {
+    font-family: pictos;
+    font-size: 1.2em;
+    margin-left: 1em;
+    font-style: normal;
+}
+
+.sheet-complex .sheet-linkedmod[value=""] ~ .sheet-trait .sheet-display .sheet-subheader span.sheet-link {
+    display: none;
+}

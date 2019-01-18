@@ -1847,6 +1847,8 @@
                 <textarea class="sheet-simple" name="attr_features_and_traits" style="min-height: 461px; height: 461px;"></textarea>
                 <div class="complex">
                     <fieldset class="repeating_traits">
+                        <input class="linkedmod" type='hidden' name='attr_linkedmod' value=''>
+                        <input type='hidden' name='attr_blobname' value=''>
                         <div class="trait">
                             <button type="roll" name="roll_output" class="output" value="@{wtype}&{template:traits} @{charname_output} {{name=@{name}}} {{source=@{source}: @{source_type}}} {{description=@{description}}}">w</button>
                             <input class="options-flag" type="checkbox" name="attr_options-flag" checked="checked"><span>y</span>
@@ -1877,7 +1879,7 @@
                             <div class="display" style="margin-bottom: 2px;">
                                 <span class="title" name="attr_name"></span>
                                 <span class="subheader">
-                                    <span name="attr_source"></span><span>: </span><span name="attr_source_type"></span>
+                                    <span name="attr_source"></span><span>: </span><span name="attr_source_type"></span><span class="link" title="This trait is linked to changes to the sheet, if you remove it, the changes will be undone.">j</span>
                                 </span>
                                 <span class="desc" name="attr_description"></span>
                             </div>
@@ -4894,6 +4896,12 @@
 <input type='hidden' name='attr_l1mancer_status' value=''>
 <input type='hidden' name='attr_lpmancer_status' value=''>
 
+<fieldset class="repeating_linkedmods">
+    <input type='hidden' name='attr_repids' value=''>
+    <input type='hidden' name='attr_revert' value=''>
+    <input type='hidden' name='attr_mods' value=''>
+</fieldset>
+
 </div>
 
 <div class="compendium_warning">
@@ -6066,6 +6074,10 @@
 
 <!-- WORKERS -->
 <script type="text/worker">
+    const customlog = function(body) {
+        body = body || "";
+        console.log(`%c${body}`,`color: green; font-weight: bold; font-size: 2rem;`);
+    }
 
     on("sheet:opened", function(eventinfo) {
         versioning(function() {
@@ -7412,7 +7424,7 @@
         var getList = [
             {name: "proficiencies", list: ["name"]},
             {name: "tool", list: ["toolname", "toolattr_base"]},
-            {name: "traits", list: ["name", "source", "source_type"]},
+            {name: "traits", list: ["name", "source", "source_type", "linkedmod", "blobname"]},
             {name: "resource", list: ["resource_left_name", "resource_right_name"]},
             {name: "spell-cantrip", list: ["spellname", "spellattackid", "spellsource", "spellattackid"]},
             {name: "savemod", list: ["global_save_name"]},
@@ -8382,6 +8394,9 @@
             blobs = filterBlobs(page.data.blobs, {"Level": "1"});
         }
         _.each(blobs, function(blob, blobname) {
+            let first_trait = "";
+            let traitmods = {};
+            let traitmodid = generateRowID();
             if(blob["Traits"]) {
                 var traitsource = "";
                 switch (category) {
@@ -8410,6 +8425,7 @@
                                 existing.name = trait["Name"];
                                 existing.source = traitsource;
                                 existing.type = page.name;
+                                traitmodid = existing.linkedmod || traitmodid;
                             } else {
                                 var newtrait = {};
                                 newrowid = generateRowID();
@@ -8419,11 +8435,13 @@
                                 newtrait.type = page.name;
                                 repeating.traits.push(newtrait);
                             }
+                            if(first_trait === "") first_trait = newrowid;
                             update["repeating_traits_" + newrowid + "_name"] = trait["Name"].replace(/{{Input}}/g, "");
                             update["repeating_traits_" + newrowid + "_description"] = trait["Desc"] ? trait["Desc"].replace(/{{Input}}/g, "") : "";
                             update["repeating_traits_" + newrowid + "_source"] = traitsource;
                             update["repeating_traits_" + newrowid + "_source_type"] = page.name ? page.name : "";
                             update["repeating_traits_" + newrowid + "_options-flag"] = 0;
+                            update["repeating_traits_" + newrowid + "_blobname"] = blobname;
                             update["repeating_traits_" + newrowid + "_display_flag"] = "on";
                         }
                     });
@@ -8657,7 +8675,12 @@
                 } else if (blob["Initiative"].toLowerCase() === "disadvantage") {
                     update["initiative_style"] = "{@{d20},@{d20}}kl1";
                 } else {
-                    update.initmod = numUses(blob["Initiative"]);
+                    if(first_trait === "") {
+                        update.initmod = numUses(blob["Initiative"]);
+                    } else {
+                        traitmods.mods = traitmods.mods || {};
+                        traitmods.mods.initmod = numUses(blob["Initiative"]);
+                    }
                 }
             };
             if(blob["Carry Multiplier"]) {
@@ -8758,6 +8781,16 @@
                     update[prof.replace(/ /g, "_").toLowerCase() + "_flat"] = numUses(value);
                 });
             };
+
+            if(_.keys(traitmods).length > 0) {
+                update[`repeating_traits_${first_trait}_linkedmod`] = traitmodid;
+                if(traitmods.mods) update[`repeating_linkedmods_${traitmodid}_mods`] = JSON.stringify(traitmods.mods);
+                if(traitmods.repids) update[`repeating_linkedmods_${traitmodid}_repids`] = JSON.stringify(traitmods.repids);
+                if(traitmods.revert) update[`repeating_linkedmods_${traitmodid}_revert`] = JSON.stringify(traitmods.revert);
+                if(!looped) {
+                    callbacks.push(update_traitmods);
+                }
+            }
             /**/
         });
 
@@ -8766,6 +8799,10 @@
             repeating: repeating,
             callbacks: callbacks
         };
+    };
+
+    var update_traitmods = function() {
+        customlog("GOT IT!")
     };
 
     var check_itemmodifiers = function(modifiers, previousValue) {
