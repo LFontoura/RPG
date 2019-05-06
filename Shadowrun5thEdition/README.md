@@ -240,7 +240,7 @@ The built in sheet buttons do not cover all of the rolls in Shadowrun 5e by a lo
 
 * **Drain**. This is a sample for a Drain macro. You'll want to replace Logic with your appropriate attribute such as @{intuition}, @{magic}, @{charisma} ...
 
-```@{gm_toggle} &{template:rolls}{{header=Drain}}{{base=Base}}{{mod=[[@{modifier_toggle}]]}}{{wound=[[@{wound_toggle}]]}}@{modifier_toggle}{{edge=[[@{edge_toggle}]]}}{{dice=[[(@{willpower}+@{logic}+@{wound_toggle}+@{modifier_toggle}+@{edge_toggle})d6>5@{explode_toggle}]]}}```
+```@{gm_toggle} &{template:rolls}{{header=Drain}}{{base=Base}}{{mod=[[@{modifier_toggle}]]}} {{wound=[[@{wound_toggle}]]}}@{modifier_toggle}{{edge=[[@{edge_toggle}]]}}{{dice=[[(@{willpower}+@{logic}+@{wound_toggle}+@{modifier_toggle}+@{edge_toggle})d6>5@{explode_toggle}]]}}```
 
 * **Defense**
 
